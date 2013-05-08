@@ -35,8 +35,9 @@ public class Main {
 //		System.out.println(datei.getTextString());
 		
 		befehl.starteAbarbeitung(befehlTree);
+		
 		System.out.println();
-	
+		
 	}
 
 

@@ -20,6 +20,12 @@ public class InstructionManager {
 
 	public int a = 0;
 
+	
+	public DataMemory getMemory(){
+		return data;
+	}
+	
+	
 	// List mit allen befehlen -> ruft ausführen aus
 	public void starteAbarbeitung(TreeMap befehlBaum) {
 		befehlTree = befehlBaum;

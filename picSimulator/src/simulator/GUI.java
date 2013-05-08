@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 
 import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.DateiEinlesen;
+import simulator.memory.DataMemory;
 
 public class GUI extends JFrame {
 	/**
@@ -35,9 +36,13 @@ public class GUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable table;
+	private DataMemory mem;
 	
 	public GUI(DateiEinlesen readFile, InstructionManager commands) {
 		super("pic Simulator");
+		mem = commands.getMemory();
+		
+		
 		setSize(1200, 800);
 		setVisible(true);
 		addComponentListener(new ComponentListener() {
@@ -103,46 +108,20 @@ public class GUI extends JFrame {
 					.addGap(101))
 		);
 		
+		
+		
 		table = new JTable();
 		table.setRowSelectionAllowed(false);
 		table.setForeground(SystemColor.activeCaptionText);
 		table.setGridColor(SystemColor.textHighlight);
 		table.getTableHeader().setReorderingAllowed(false);
+		
+		
+		Object[][] intTable = fillTable();
+		
+		
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"00", null, null, null, null, null, null, null, null},
-				{"08", null, null, null, null, null, null, null, null},
-				{"10", null, null, null, null, null, null, null, null},
-				{"18", null, null, null, null, null, null, null, null},
-				{"20", null, null, null, null, null, null, null, null},
-				{"28", null, null, null, null, null, null, null, null},
-				{"30", null, null, null, null, null, null, null, null},
-				{"38", null, null, null, null, null, null, null, null},
-				{"40", null, null, null, null, null, null, null, null},
-				{"48", null, null, null, null, null, null, null, null},
-				{"50", null, null, null, null, null, null, null, null},
-				{"58", null, null, null, null, null, null, null, null},
-				{"60", null, null, null, null, null, null, null, null},
-				{"68", null, null, null, null, null, null, null, null},
-				{"70", null, null, null, null, null, null, null, null},
-				{"78", null, null, null, null, null, null, null, null},
-				{"80", null, null, null, null, null, null, null, null},
-				{"88", null, null, null, null, null, null, null, null},
-				{"90", null, null, null, null, null, null, null, null},
-				{"98", null, null, null, null, null, null, null, null},
-				{"A0", null, null, null, null, null, null, null, null},
-				{"A8", null, null, null, null, null, null, null, null},
-				{"B0", null, null, null, null, null, null, null, null},
-				{"B8", null, null, null, null, null, null, null, null},
-				{"C0", null, null, null, null, null, null, null, null},
-				{"C8", null, null, null, null, null, null, null, null},
-				{"D0", null, null, null, null, null, null, null, null},
-				{"D8", null, null, null, null, null, null, null, null},
-				{"E0", null, null, null, null, null, null, null, null},
-				{"E8", null, null, null, null, null, null, null, null},
-				{"F0", null, null, null, null, null, null, null, null},
-				{"F8", null, null, null, null, null, null, null, null},
-			},
+			intTable,
 			new String[] {
 				"", "00", "01", "02", "03", "04", "05", "06", "07"
 			}
@@ -158,6 +137,8 @@ public class GUI extends JFrame {
 				return columnEditables[column];
 			}
 		});
+		
+		
 		scrollPane.setViewportView(table);
 		Menu.setLayout(null);
 		
@@ -281,5 +262,28 @@ public class GUI extends JFrame {
 		
 		
 		this.pack();
+	}
+	
+	public Object[][] fillTable(){
+		
+		String[] rowNames = {"00","08","10","18","20","28","30","38","40","48","50","58","60","68","70","78","80","88","90","98","A0","A8","B0","B8","C0","C8","D0","D8","E0","E8","F0","F8","FF"};
+		Object[][] intTable = new Object[32][9];
+		int address = 0;
+		int rowTag = 0x0;
+		for(int row=0;row <=31;row++){
+			
+			for(int column=0;column<=8;column++){
+				if(column==0){
+					intTable[row][column]=rowNames[rowTag];
+					rowTag++;
+				}
+				else{
+				intTable[row][column]=mem.readFileValue(address);
+				address++;
+				}
+			}
+			
+		}
+		return intTable;
 	}
 }

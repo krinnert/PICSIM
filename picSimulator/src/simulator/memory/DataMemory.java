@@ -26,7 +26,7 @@ public class DataMemory {
 	public DataMemory() {
 
 		// Int-Array mit der Größe FF
-		memory = new int[0xFF];
+		memory = new int[256];
 		this.initMemory();
 		
 		this.initPCLath();
