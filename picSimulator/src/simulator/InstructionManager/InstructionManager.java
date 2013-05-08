@@ -408,13 +408,13 @@ public class InstructionManager {
 		i = (opCode & 2047) - 1;
 		// i= mem.getLath(3, 4) + opCode & 2047;
 		System.out.println("GOTO: gehe zu: " + i);
-		if (i==40) {
-			mem.writeBitValue(6, 0, 1);
-		}
-		if (i==46) {
-			ausgabe();
-			System.exit(1);
-		}
+//		if (i==40) {
+//			mem.writeBitValue(6, 0, 1);
+//		}
+//		if (i==46) {
+//			ausgabe();
+//			System.exit(1);
+//		}
 		// Achtung: es entsteht dauerschleife wenn rb=0 --- muss in GUI gesetzt
 		// werden damits weitergeht
 	}
