@@ -25,8 +25,8 @@ public class Main {
 		InstructionManager befehl= new InstructionManager();
 		
 		DateiEinlesen datei= new DateiEinlesen();
-		datei.setDatei("A1.LST");
-		datei.berechneDatei();
+	//	datei.setDatei();
+		datei.berechneDatei("A1.LST");
 		befehlTree= datei.getBefehlTree();
 		textTree= datei.getTextTree();
 		

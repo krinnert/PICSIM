@@ -13,10 +13,9 @@ public class DateiEinlesen {
 	TreeMap<Integer, Befehl> befehlTree = new TreeMap<Integer, Befehl>();
 	TreeMap<Integer, String> textTree = new TreeMap<Integer, String>();
 	
-	public void setDatei(String name){ // legt fest wo die datei liegt
-		dateiName= name;
-	}
-	public void berechneDatei(){
+
+	public void berechneDatei(String path){
+		dateiName = path;
 		FileReader meinFile= null;
 		BufferedReader meinLeseStream= null;
 		

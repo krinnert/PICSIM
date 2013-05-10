@@ -2,9 +2,6 @@ package simulator;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.SystemColor;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -12,15 +9,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
@@ -29,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.DateiEinlesen;
 import simulator.memory.DataMemory;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class GUI extends JFrame {
 	/**
@@ -37,8 +36,10 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private DataMemory mem;
+	private DefaultListModel<String> listModel;
+	private JList<String> list;
 	
-	public GUI(DateiEinlesen readFile, InstructionManager commands) {
+	public GUI(final DateiEinlesen readFile, InstructionManager commands) {
 		super("pic Simulator");
 		mem = commands.getMemory();
 		
@@ -63,8 +64,6 @@ public class GUI extends JFrame {
 		
 		JPanel Menu = new JPanel();
 		Menu.setBackground(SystemColor.textHighlight);
-		
-		JTextPane textPane = new JTextPane();
 
 		
 		JPanel BoxSchalter = new JPanel();
@@ -76,12 +75,21 @@ public class GUI extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
 		scrollPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		
+		listModel = new DefaultListModel<String>();
+		list = new JList<String>();
+		
+		JPanel boxControlling = new JPanel();
+		boxControlling.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Controlling", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addComponent(Menu, GroupLayout.DEFAULT_SIZE, 1182, Short.MAX_VALUE)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(textPane, GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(list, GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+						.addComponent(boxControlling, GroupLayout.PREFERRED_SIZE, 567, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -90,23 +98,60 @@ public class GUI extends JFrame {
 							.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 565, GroupLayout.PREFERRED_SIZE))
 					.addGap(20))
-				.addComponent(Menu, GroupLayout.DEFAULT_SIZE, 1182, Short.MAX_VALUE)
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addComponent(Menu, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
 							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
 							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-								.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(textPane, GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
-					.addGap(101))
+								.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
+							.addGap(101))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(list, GroupLayout.PREFERRED_SIZE, 560, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(98)
+					.addComponent(boxControlling, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(588, Short.MAX_VALUE))
 		);
+		BoxSchalter.setLayout(null);
+		
+		JCheckBox S1 = new JCheckBox("Schalter 1");
+		S1.setBorder(null);
+		S1.setBounds(12, 20, 95, 25);
+		BoxSchalter.add(S1);
+		
+		JCheckBox S2 = new JCheckBox("Schalter 2");
+		S2.setBorder(null);
+		S2.setBounds(12, 47, 95, 25);
+		BoxSchalter.add(S2);
+		
+		JCheckBox S3 = new JCheckBox("Schalter 3");
+		S3.setBorder(null);
+		S3.setBounds(12, 75, 95, 25);
+		BoxSchalter.add(S3);
+		
+		JCheckBox S4 = new JCheckBox("Schalter 4");
+		S4.setBorder(null);
+		S4.setBounds(12, 103, 95, 25);
+		BoxSchalter.add(S4);
+		
+		JCheckBox S5 = new JCheckBox("Schalter 5");
+		S5.setBorder(null);
+		S5.setBounds(12, 132, 95, 25);
+		BoxSchalter.add(S5);
+		
+		JCheckBox S6 = new JCheckBox("Schalter 6");
+		S6.setBorder(null);
+		S6.setBounds(12, 161, 95, 25);
+		BoxSchalter.add(S6);
 		
 		
 		
@@ -142,7 +187,7 @@ public class GUI extends JFrame {
 		scrollPane.setViewportView(table);
 		Menu.setLayout(null);
 		
-		ImageButton insert = new ImageButton("insertCode.png","insertCodeMO.png", "insertCodePressed.png", "Insert the Code");
+		ImageButton insert = new ImageButton(60,"insertCode.png","insertCodeMO.png", "insertCodePressed.png", "Insert the Code");
 		insert.setLocation(12, 13);
 		insert.addMouseListener(new MouseListener() {
 			@Override
@@ -171,9 +216,17 @@ public class GUI extends JFrame {
 				 });
 				int state = chooser.showOpenDialog( null ); 
 			    if ( state == JFileChooser.APPROVE_OPTION ) { 
-//			    	readFile.berechneDatei(chooser.getSelectedFile());
 			    	File file = chooser.getSelectedFile();
-			    	String name = chooser.getSelectedFile().getName();
+			    	String filePath = file.getAbsolutePath();
+			    	
+			    	list.setModel(listModel);
+			    	//listModel.addElement(file.toString());
+			    	String a = "hallo";
+			    	for(int i=0; i<=30; i++) {
+			    		listModel.addElement(a);
+			    	}
+			    	
+			    	
 			    } else {	
 			    	System.out.println( "Cancel" );
 			    }
@@ -181,9 +234,19 @@ public class GUI extends JFrame {
 		});
 		
 		Menu.add(insert);
-		ImageButton settings = new ImageButton("settings.png","settingsMO.png", "settingsPressed.png", "Settings");
+		ImageButton settings = new ImageButton(60, "settings.png","settingsMO.png", "settingsPressed.png", "Settings");
 		settings.setLocation(100, 13);
 		Menu.add(settings);
+		
+		// Controlling
+		ImageButton backward = new ImageButton(30,"Backward.png", "BackwardMO.png", "BackwardP.png", "Backwards");
+		boxControlling.add(backward);
+		ImageButton play = new ImageButton(30,"Play.png", "PlayMO.png", "PlayP.png", "Play");
+		ImageButton pause = new ImageButton(30,"Pause.png", "PauseMO.png", "PauseP.png", "Pause");
+		boxControlling.add(play);
+		ImageButton forward = new ImageButton(30,"Forward.png", "ForwardMO.png", "ForwardP.png", "Forwards");
+		boxControlling.add(forward);
+		
 		
 		// LED-Array
 		LED led1 = new LED();
@@ -209,54 +272,6 @@ public class GUI extends JFrame {
 		led2.turnON();
 		led8.turnON();
 		led9.turnON();
-		
-		
-		GridBagLayout gbl_BoxSchalter = new GridBagLayout();
-		gbl_BoxSchalter.columnWidths = new int[]{89, 0};
-		gbl_BoxSchalter.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
-		gbl_BoxSchalter.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_BoxSchalter.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		BoxSchalter.setLayout(gbl_BoxSchalter);
-		
-		JCheckBox S1 = new JCheckBox("Schalter 1");
-		GridBagConstraints gbc_S1 = new GridBagConstraints();
-		gbc_S1.anchor = GridBagConstraints.NORTHWEST;
-		gbc_S1.insets = new Insets(0, 0, 5, 0);
-		gbc_S1.gridx = 0;
-		gbc_S1.gridy = 0;
-		BoxSchalter.add(S1, gbc_S1);
-		
-		JCheckBox S2 = new JCheckBox("Schalter 2");
-		GridBagConstraints gbc_S2 = new GridBagConstraints();
-		gbc_S2.anchor = GridBagConstraints.NORTHWEST;
-		gbc_S2.insets = new Insets(0, 0, 5, 0);
-		gbc_S2.gridx = 0;
-		gbc_S2.gridy = 1;
-		BoxSchalter.add(S2, gbc_S2);
-		
-		JCheckBox S3 = new JCheckBox("Schalter 3");
-		GridBagConstraints gbc_S3 = new GridBagConstraints();
-		gbc_S3.anchor = GridBagConstraints.NORTHWEST;
-		gbc_S3.insets = new Insets(0, 0, 5, 0);
-		gbc_S3.gridx = 0;
-		gbc_S3.gridy = 2;
-		BoxSchalter.add(S3, gbc_S3);
-		
-		JCheckBox S4 = new JCheckBox("Schalter 4");
-		GridBagConstraints gbc_S4 = new GridBagConstraints();
-		gbc_S4.insets = new Insets(0, 0, 5, 0);
-		gbc_S4.anchor = GridBagConstraints.NORTHWEST;
-		gbc_S4.gridx = 0;
-		gbc_S4.gridy = 3;
-		BoxSchalter.add(S4, gbc_S4);
-		
-		JCheckBox S5 = new JCheckBox("Schalter 5");
-		GridBagConstraints gbc_S5 = new GridBagConstraints();
-		gbc_S5.insets = new Insets(0, 0, 5, 0);
-		gbc_S5.anchor = GridBagConstraints.NORTHWEST;
-		gbc_S5.gridx = 0;
-		gbc_S5.gridy = 4;
-		BoxSchalter.add(S5, gbc_S5);
 		getContentPane().setLayout(groupLayout);
 
 		
