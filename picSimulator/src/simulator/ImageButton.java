@@ -13,13 +13,13 @@ public class ImageButton extends JButton {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Dimension dim = new Dimension(60, 60);
 	private String path = "./resources/";
 
 	/*
 	 * Customized Icon with new functions
 	 */
-	public ImageButton(int size, String imagePath, String imageMouseOverPath, String imagePressedPath, String tooltip) {
-		Dimension dim = new Dimension(size, size);
+	public ImageButton(String imagePath, String imageMouseOverPath, String imagePressedPath, String tooltip) {
 		
 		ImageIcon iconNormal = new ImageIcon(getToolkit().getImage(path + imagePath).getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
 		ImageIcon iconMouseOver = new ImageIcon(getToolkit().getImage(path + imageMouseOverPath).getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
