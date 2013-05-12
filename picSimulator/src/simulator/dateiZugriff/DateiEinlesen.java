@@ -1,7 +1,12 @@
 package simulator.dateiZugriff;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 public class DateiEinlesen {
 	
@@ -76,16 +81,33 @@ public class DateiEinlesen {
 	public void setTextTree(TreeMap<Integer, String> textTree) {
 		this.textTree = textTree;
 	}
+	
+//	public String getTextString(){
+//		TreeMap<Integer,String> textTree = this.getTextTree();
+//		String text ="";
+//		for(Entry<Integer, String> entry : textTree.entrySet()){
+//			text = entry.getValue();
+//		}
+//		return text;
+//	}
+	
+	
 
 	public String getTextString(){
 		TreeMap<Integer,String> textTree = this.getTextTree();
 		String text ="";
 		for(Entry<Integer, String> entry : textTree.entrySet()){
-		text = text + entry.getValue() + "\n";
+			text = text + entry.getValue() + "\n";
 		}
-
 		return text;
-
+	}
+	
+	
+	public void insert(DefaultListModel<String> listModel) {
+		for(Entry<Integer, String> entry : textTree.entrySet()){
+			listModel.addElement(entry.getValue());
 		}
+	}
+
 
 }

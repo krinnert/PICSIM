@@ -21,6 +21,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -36,22 +37,25 @@ public class GUI extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JList<String> list;
 	private JTable table;
 	private DataMemory mem;
 	private DefaultListModel<String> listModel;
-	private JList<String> list;
 	private ImageButton play = null;
 	private ImageButton pause = null;
-	private ImageButton toggle = null;
-	private boolean isRunning = false;
 	
 	public GUI(final DateiEinlesen readFile, InstructionManager commands) {
 		super("pic Simulator");
 		mem = commands.getMemory();
 		
-		
 		setSize(1200, 800);
 		setVisible(true);
+		
+		/*  Attempting to show a Load the Application Screen
+		JLayeredPane layerPane = new JLayeredPane();
+		add(layerPane);
+		*/
+		
 		addComponentListener(new ComponentListener() {
 			@Override
 			public void componentShown(ComponentEvent e) {
@@ -78,43 +82,49 @@ public class GUI extends JFrame {
 		JPanel BoxLED = new JPanel();
 		BoxLED.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "LEDs", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBorder(null);
-		scrollPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		JScrollPane tableScroller = new JScrollPane();
+		tableScroller.setBorder(null);
+		tableScroller.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		
 		listModel = new DefaultListModel<String>();
-		list = new JList<String>();
+		
+		JScrollPane listScroller = new JScrollPane();
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addComponent(Menu, GroupLayout.DEFAULT_SIZE, 1182, Short.MAX_VALUE)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(list, GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
-					.addGap(18)
+					.addComponent(listScroller, GroupLayout.PREFERRED_SIZE, 437, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 565, GroupLayout.PREFERRED_SIZE))
-					.addGap(20))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(tableScroller, GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE))
+						.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addComponent(Menu, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(listScroller, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-								.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(list, GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
-					.addGap(101))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(tableScroller, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
+		
+		list = new JList<String>();
+		listScroller.setViewportView(list);
 		BoxSchalter.setLayout(null);
 		
 		JCheckBox S1 = new JCheckBox("Schalter 1");
@@ -147,6 +157,36 @@ public class GUI extends JFrame {
 		S6.setBounds(12, 161, 95, 25);
 		BoxSchalter.add(S6);
 		
+		JCheckBox S7 = new JCheckBox("Schalter 7");
+		S7.setBorder(null);
+		S7.setBounds(12, 188, 95, 25);
+		BoxSchalter.add(S7);
+		
+		JCheckBox S8 = new JCheckBox("Schalter 8");
+		S8.setBorder(null);
+		S8.setBounds(12, 215, 95, 25);
+		BoxSchalter.add(S8);
+		
+		JCheckBox S9 = new JCheckBox("Schalter 9");
+		S9.setBorder(null);
+		S9.setBounds(12, 243, 95, 25);
+		BoxSchalter.add(S9);
+		
+		JCheckBox S10 = new JCheckBox("Schalter 10");
+		S10.setBorder(null);
+		S10.setBounds(12, 271, 95, 25);
+		BoxSchalter.add(S10);
+		
+		JCheckBox S11 = new JCheckBox("Schalter 11");
+		S11.setBorder(null);
+		S11.setBounds(12, 300, 95, 25);
+		BoxSchalter.add(S11);
+		
+		JCheckBox S12 = new JCheckBox("Schalter 12");
+		S12.setBorder(null);
+		S12.setBounds(12, 329, 95, 25);
+		BoxSchalter.add(S12);
+		
 		
 		
 		table = new JTable();
@@ -178,11 +218,18 @@ public class GUI extends JFrame {
 		});
 		
 		
-		scrollPane.setViewportView(table);
+		tableScroller.setViewportView(table);
 		
 		//-----------------------------------------------------
 		// Menu-Items
 		ImageButton insert = new ImageButton("insertCode.png","insertCodeMO.png", "insertCodePressed.png", "Insert the Code");
+		ImageButton backward = new ImageButton("Backward.png", "BackwardMO.png", "BackwardP.png", "Backwards");
+		pause = new ImageButton("Pause.png", "PauseMO.png", "PauseP.png", "Pause");
+		play = new ImageButton("Play.png", "PlayMO.png", "PlayP.png", "Play");
+		ImageButton forward = new ImageButton("Forward.png", "ForwardMO.png", "ForwardP.png", "Forwards");
+		ImageButton settings = new ImageButton("settings.png","settingsMO.png", "settingsPressed.png", "Settings");
+		
+		// Events of the Menu-Items
 		insert.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -199,7 +246,7 @@ public class GUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
-				// You can select just LST-Files
+				// Just LST-Files are permitted
 				chooser.setFileFilter( new FileFilter(){ 
 				      @Override public boolean accept( File file ) { 
 				    	  return file.isDirectory() || file.getName().toLowerCase().endsWith( ".lst" ); 
@@ -208,42 +255,28 @@ public class GUI extends JFrame {
 				    	  return ".lst"; 
 				      } 
 				 });
+				// Read the file and insert the code in the List
 				int state = chooser.showOpenDialog( null ); 
 			    if ( state == JFileChooser.APPROVE_OPTION ) { 
-			    	File file = chooser.getSelectedFile();
-			    	String filePath = file.getAbsolutePath();
-			    	
+			    	String filePath = chooser.getSelectedFile().getAbsolutePath();
+			    	readFile.berechneDatei(filePath);
 			    	list.setModel(listModel);
-			    	//listModel.addElement(file.toString());
-			    	String a = "hallo";
-			    	for(int i=0; i<=30; i++) {
-			    		listModel.addElement(a);
-			    	}
-			    	
-			    	
+			    	readFile.insert(listModel);
 			    } else {	
 			    	System.out.println( "Cancel" );
 			    }
 			}
 		});
-		ImageButton backward = new ImageButton("Backward.png", "BackwardMO.png", "BackwardP.png", "Backwards");
-		pause = new ImageButton("Pause.png", "PauseMO.png", "PauseP.png", "Pause");
-		play = new ImageButton("Play.png", "PlayMO.png", "PlayP.png", "Play");
-		toggle = play;
-		// Changing the Appearance of the ImageButton depend on User
-		play.addMouseListener(new MouseListener() {
+		
+		pause.setVisible(false);
+		pause.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 			}
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				if(isRunning == false) {
-					toggle = pause;
-					isRunning = true;
-				} else if ( isRunning == true) {
-					toggle = play;
-					isRunning = false;
-				}
+				play.setVisible(true);
+				pause.setVisible(false);
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -255,11 +288,34 @@ public class GUI extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 			}
 		});
-		ImageButton forward = new ImageButton("Forward.png", "ForwardMO.png", "ForwardP.png", "Forwards");
-		ImageButton settings = new ImageButton("settings.png","settingsMO.png", "settingsPressed.png", "Settings");
 		
+		play.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+			}
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				play.setVisible(false);
+				pause.setVisible(true);
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
+		
+		// Layout of the Menu-Items
 		Menu.setLayout(new BorderLayout(30,30));
 		JPanel west = new JPanel(new GridLayout(1,4,10,0));
+		JPanel toggle = new JPanel(new BorderLayout());
+		toggle.setBackground(null);
+		toggle.add(pause, BorderLayout.CENTER);
+		toggle.add(play, BorderLayout.CENTER);
 		west.setBackground(null);
 		west.add(insert);
 		west.add(backward);
@@ -269,6 +325,7 @@ public class GUI extends JFrame {
 		west.setLocation(30, 30);
 		Menu.add(settings, BorderLayout.EAST);
 		Menu.setBorder(new EmptyBorder(0, 20, 0, 20));
+		
 		
 		//-----------------------------------------------------
 		// LED-Array
