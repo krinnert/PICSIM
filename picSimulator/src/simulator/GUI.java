@@ -3,7 +3,9 @@ package simulator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.SplashScreen;
 import java.awt.SystemColor;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -48,9 +50,21 @@ public class GUI extends JFrame {
 		super("pic Simulator");
 		mem = commands.getMemory();
 		
+		
 		setSize(1200, 800);
 		setVisible(true);
 		
+//		final SplashScreen splash = SplashScreen.getSplashScreen();
+//        if (splash == null) {
+//            System.out.println("SplashScreen.getSplashScreen() returned null");
+//            return;
+//        }
+//        Graphics2D g = splash.createGraphics();
+//        if (g == null) {
+//            System.out.println("g is null");
+//            return;
+//        }
+        
 		/*  Attempting to show a Load the Application Screen
 		JLayeredPane layerPane = new JLayeredPane();
 		add(layerPane);
@@ -295,6 +309,7 @@ public class GUI extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent arg0) {
+				new StartScreen();
 				play.setVisible(false);
 				pause.setVisible(true);
 			}

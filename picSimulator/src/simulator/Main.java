@@ -20,23 +20,23 @@ public class Main {
 	static TreeMap<Integer, String> textTree = new TreeMap<Integer, String>();
 
 	public static void main(String[] args){
-
 		
+		StartScreen start = new StartScreen();
 		InstructionManager befehl= new InstructionManager();
-		
 		DateiEinlesen datei= new DateiEinlesen();
-	//	datei.setDatei();
 		datei.berechneDatei("A1.LST");
 		befehlTree= datei.getBefehlTree();
 		textTree= datei.getTextTree();
 		
 		GUI gui= new GUI(datei,befehl);
-		
-//		System.out.println(datei.getTextString());
+		start.dispose();
+
 		
 		befehl.starteAbarbeitung(befehlTree);
 		
 		System.out.println();
+		
+		
 		
 	}
 
