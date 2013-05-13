@@ -11,6 +11,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.TreeMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -30,6 +31,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
 import simulator.InstructionManager.InstructionManager;
+import simulator.dateiZugriff.Befehl;
 import simulator.dateiZugriff.DateiEinlesen;
 import simulator.memory.DataMemory;
 
@@ -38,6 +40,12 @@ public class GUI extends JFrame implements Runnable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	static TreeMap<Integer, Befehl> befehlTree = new TreeMap<Integer, Befehl>();
+	static TreeMap<Integer, String> textTree = new TreeMap<Integer, String>();
+	final DateiEinlesen readFile;
+	final InstructionManager commands;
+	
 	private JList<String> list;
 	private JTable table;
 	private DataMemory mem;
@@ -60,14 +68,18 @@ public class GUI extends JFrame implements Runnable {
 	private LED ledRB8;
 	
 	
-	public GUI(final DateiEinlesen readFile, final InstructionManager commands) {
+	public GUI( DateiEinlesen readFileX, InstructionManager commandsX) {
 		super("pic Simulator");
+		this.readFile = readFileX;
+		this.commands = commandsX;
 		mem = commands.getMemory();
 		Dimension displaySize = getToolkit().getScreenSize();
 		
 		setSize(1200, 800);
 		setLocation(displaySize.width/2 - getWidth()/2, displaySize.height/2 - getHeight()/2);
 		setVisible(true);
+		
+		
 		
 		addComponentListener(new ComponentListener() {
 			@Override
@@ -148,6 +160,8 @@ public class GUI extends JFrame implements Runnable {
 		list = new JList<String>();
 		listScroller.setViewportView(list);
 		BoxSchalter.setLayout(null);
+		
+		list.setEnabled(false);
 		
 		int on;
 		JCheckBox S1 = new JCheckBox("RA0");
@@ -323,7 +337,7 @@ public class GUI extends JFrame implements Runnable {
 		play = new ImageButton("Play.png", "PlayMO.png", "PlayP.png", "Play");
 		ImageButton forward = new ImageButton("Forward.png", "ForwardMO.png", "ForwardP.png", "Forwards");
 		ImageButton settings = new ImageButton("settings.png","settingsMO.png", "settingsPressed.png", "Settings");
-		play.setVisible(false);
+		pause.setVisible(false);
 		
 		// Events of the Menu-Items
 		insert.addMouseListener(new MouseListener() {
@@ -358,6 +372,8 @@ public class GUI extends JFrame implements Runnable {
 			    	readFile.berechneDatei(filePath);
 			    	list.setModel(listModel);
 			    	readFile.insert(listModel);
+			    	befehlTree= readFile.getBefehlTree();
+					textTree= readFile.getTextTree();
 			    } else {	
 			    	System.out.println( "Cancel" );
 			    }
@@ -393,7 +409,10 @@ public class GUI extends JFrame implements Runnable {
 			public void mousePressed(MouseEvent arg0) {
 				play.setVisible(false);
 				pause.setVisible(true);
+				list.setSelectedIndex(commands.getAktuelleZeile());
+				commands.starteAbarbeitung(befehlTree);
 				commands.setPause(false);
+				
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {

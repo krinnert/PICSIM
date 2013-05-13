@@ -53,7 +53,7 @@ public class InstructionManager {
 			befehlTree.get(i);
 			findeBefehl(befehlTree.get(i).getCode());
 			
-//			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
+			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
 //			System.out.println("******zeile:" + i +"  F Register: "+mem.readFileValue(0x0f));
 		}
 
@@ -84,7 +84,7 @@ public class InstructionManager {
 	
 	public int getAktuelleZeile(){
 		//changesv
-		return befehlTree.get(i).getProgrammzeile(); 
+		return i;
 	}
 	
 	public int a = 0;
