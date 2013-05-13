@@ -83,6 +83,7 @@ public class InstructionManager {
 	}
 	
 	public int getAktuelleZeile(){
+		//changes
 		return befehlTree.get(i).getProgrammzeile(); 
 	}
 	
