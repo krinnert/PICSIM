@@ -1,11 +1,5 @@
 package simulator;
-import java.awt.Color;
-import java.io.*;
 import java.util.TreeMap;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import javax.swing.JFrame;
 
 import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.Befehl;
@@ -40,6 +34,8 @@ public class Main {
 		
 		
 	}
+
+
 
 
 	

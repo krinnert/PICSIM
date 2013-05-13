@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.SplashScreen;
 import java.awt.SystemColor;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -35,7 +33,7 @@ import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.DateiEinlesen;
 import simulator.memory.DataMemory;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements Runnable {
 	/**
 	 * 
 	 */
@@ -46,6 +44,7 @@ public class GUI extends JFrame {
 	private DefaultListModel<String> listModel;
 	private ImageButton play = null;
 	private ImageButton pause = null;
+	private LED led1;
 	
 	public GUI(final DateiEinlesen readFile, InstructionManager commands) {
 		super("pic Simulator");
@@ -297,6 +296,7 @@ public class GUI extends JFrame {
 			public void mousePressed(MouseEvent arg0) {
 				play.setVisible(false);
 				pause.setVisible(true);
+				led1.turnON();
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -330,7 +330,7 @@ public class GUI extends JFrame {
 		
 		//-----------------------------------------------------
 		// LED-Array
-		LED led1 = new LED();
+		led1 = new LED();
 		LED led2 = new LED();
 		LED led3 = new LED();
 		LED led4 = new LED();
@@ -355,7 +355,8 @@ public class GUI extends JFrame {
 		led9.turnON();
 		getContentPane().setLayout(groupLayout);
 
-		
+		Thread updater = new Thread();
+		updater.start();
 		
 		this.pack();
 	}
@@ -384,4 +385,13 @@ public class GUI extends JFrame {
 		}
 		return intTable;
 	}
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		this.validate();
+		this.repaint();
+	}
+	
 }
