@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.SplashScreen;
 import java.awt.SystemColor;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -35,7 +33,7 @@ import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.DateiEinlesen;
 import simulator.memory.DataMemory;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements Runnable {
 	/**
 	 * 
 	 */
@@ -47,7 +45,22 @@ public class GUI extends JFrame {
 	private ImageButton play = null;
 	private ImageButton pause = null;
 	
-	public GUI(final DateiEinlesen readFile, InstructionManager commands) {
+	private LED ledRA1;
+	private LED ledRA2;
+	private LED ledRA3;
+	private LED ledRA4;
+	private LED ledRA5;
+	private LED ledRB1;
+	private LED ledRB2;
+	private LED ledRB3;
+	private LED ledRB4;
+	private LED ledRB5;
+	private LED ledRB6;
+	private LED ledRB7;
+	private LED ledRB8;
+	
+	
+	public GUI(final DateiEinlesen readFile, final InstructionManager commands) {
 		super("pic Simulator");
 		mem = commands.getMemory();
 		Dimension displaySize = getToolkit().getScreenSize();
@@ -79,8 +92,10 @@ public class GUI extends JFrame {
 		JPanel BoxSchalter = new JPanel();
 		BoxSchalter.setBorder(new TitledBorder(null, "Schalter", TitledBorder.LEADING, TitledBorder.TOP, null, SystemColor.textHighlight));
 		
-		JPanel BoxLED = new JPanel();
-		BoxLED.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "LEDs", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
+		JPanel BoxLEDra = new JPanel();
+		BoxLEDra.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "LEDs - RA", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
+		JPanel BoxLEDrb = new JPanel();
+		BoxLEDrb.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "LEDs - RB", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
 		
 		JScrollPane tableScroller = new JScrollPane();
 		tableScroller.setBorder(null);
@@ -89,6 +104,8 @@ public class GUI extends JFrame {
 		listModel = new DefaultListModel<String>();
 		
 		JScrollPane listScroller = new JScrollPane();
+		
+		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -102,7 +119,8 @@ public class GUI extends JFrame {
 							.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(tableScroller, GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE))
-						.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
+						.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
+						.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -111,81 +129,158 @@ public class GUI extends JFrame {
 					.addComponent(Menu, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(listScroller, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(listScroller, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(tableScroller, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE)))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(BoxLED, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+							.addPreferredGap(ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+							.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+							.addGap(13)
+							.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+							.addGap(147))))
 		);
 		
 		list = new JList<String>();
 		listScroller.setViewportView(list);
 		BoxSchalter.setLayout(null);
 		
-		JCheckBox S1 = new JCheckBox("Schalter 1");
+		int on;
+		JCheckBox S1 = new JCheckBox("RA0");
 		S1.setBorder(null);
 		S1.setBounds(12, 20, 95, 25);
 		BoxSchalter.add(S1);
+		if(S1.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRA0(on);
 		
-		JCheckBox S2 = new JCheckBox("Schalter 2");
+		JCheckBox S2 = new JCheckBox("RA1");
 		S2.setBorder(null);
 		S2.setBounds(12, 47, 95, 25);
 		BoxSchalter.add(S2);
+		if(S2.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRA1(on);
 		
-		JCheckBox S3 = new JCheckBox("Schalter 3");
+		JCheckBox S3 = new JCheckBox("RA2");
 		S3.setBorder(null);
 		S3.setBounds(12, 75, 95, 25);
 		BoxSchalter.add(S3);
+		if(S3.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRA2(on);
 		
-		JCheckBox S4 = new JCheckBox("Schalter 4");
+		JCheckBox S4 = new JCheckBox("RA3");
 		S4.setBorder(null);
 		S4.setBounds(12, 103, 95, 25);
 		BoxSchalter.add(S4);
+		if(S4.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRA3(on);
 		
-		JCheckBox S5 = new JCheckBox("Schalter 5");
+		JCheckBox S5 = new JCheckBox("RA4");
 		S5.setBorder(null);
 		S5.setBounds(12, 132, 95, 25);
 		BoxSchalter.add(S5);
+		if(S5.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRA4(on);
 		
-		JCheckBox S6 = new JCheckBox("Schalter 6");
+		JCheckBox S6 = new JCheckBox("RB0");
 		S6.setBorder(null);
 		S6.setBounds(12, 161, 95, 25);
 		BoxSchalter.add(S6);
+		if(S6.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRB0(on);
 		
-		JCheckBox S7 = new JCheckBox("Schalter 7");
+		JCheckBox S7 = new JCheckBox("RB1");
 		S7.setBorder(null);
 		S7.setBounds(12, 188, 95, 25);
 		BoxSchalter.add(S7);
+		if(S7.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRB1(on);
 		
-		JCheckBox S8 = new JCheckBox("Schalter 8");
+		JCheckBox S8 = new JCheckBox("RB2");
 		S8.setBorder(null);
 		S8.setBounds(12, 215, 95, 25);
 		BoxSchalter.add(S8);
+		if(S8.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRB2(on);
 		
-		JCheckBox S9 = new JCheckBox("Schalter 9");
+		JCheckBox S9 = new JCheckBox("RB3");
 		S9.setBorder(null);
 		S9.setBounds(12, 243, 95, 25);
 		BoxSchalter.add(S9);
+		if(S9.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRB3(on);
 		
-		JCheckBox S10 = new JCheckBox("Schalter 10");
+		JCheckBox S10 = new JCheckBox("RB4");
 		S10.setBorder(null);
 		S10.setBounds(12, 271, 95, 25);
 		BoxSchalter.add(S10);
+		if(S10.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRB4(on);
 		
-		JCheckBox S11 = new JCheckBox("Schalter 11");
+		JCheckBox S11 = new JCheckBox("RB5");
 		S11.setBorder(null);
 		S11.setBounds(12, 300, 95, 25);
 		BoxSchalter.add(S11);
+		if(S11.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRB5(on);
 		
-		JCheckBox S12 = new JCheckBox("Schalter 12");
+		JCheckBox S12 = new JCheckBox("RB6");
 		S12.setBorder(null);
 		S12.setBounds(12, 329, 95, 25);
 		BoxSchalter.add(S12);
+		if(S12.isSelected() == true){
+			 on = 1;
+		} else {
+			on = 0;
+		}
+		commands.setRB6(on);
 		
 		
 		
@@ -228,6 +323,7 @@ public class GUI extends JFrame {
 		play = new ImageButton("Play.png", "PlayMO.png", "PlayP.png", "Play");
 		ImageButton forward = new ImageButton("Forward.png", "ForwardMO.png", "ForwardP.png", "Forwards");
 		ImageButton settings = new ImageButton("settings.png","settingsMO.png", "settingsPressed.png", "Settings");
+		play.setVisible(false);
 		
 		// Events of the Menu-Items
 		insert.addMouseListener(new MouseListener() {
@@ -268,7 +364,6 @@ public class GUI extends JFrame {
 			}
 		});
 		
-		pause.setVisible(false);
 		pause.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -277,6 +372,7 @@ public class GUI extends JFrame {
 			public void mousePressed(MouseEvent arg0) {
 				play.setVisible(true);
 				pause.setVisible(false);
+				commands.setPause(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -297,6 +393,7 @@ public class GUI extends JFrame {
 			public void mousePressed(MouseEvent arg0) {
 				play.setVisible(false);
 				pause.setVisible(true);
+				commands.setPause(false);
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -329,33 +426,54 @@ public class GUI extends JFrame {
 		
 		
 		//-----------------------------------------------------
-		// LED-Array
-		LED led1 = new LED();
-		LED led2 = new LED();
-		LED led3 = new LED();
-		LED led4 = new LED();
-		LED led5 = new LED();
-		LED led6 = new LED();
-		LED led7 = new LED();
-		LED led8 = new LED();
-		LED led9 = new LED();
-		BoxLED.add(led1);
-		BoxLED.add(led2);
-		BoxLED.add(led3);
-		BoxLED.add(led4);
-		BoxLED.add(led5);
-		BoxLED.add(led6);
-		BoxLED.add(led7);
-		BoxLED.add(led8);
-		BoxLED.add(led9);
-		
+		// LED-Arrays
+		ledRA1 = new LED();
+		ledRA2 = new LED();
+		ledRA3 = new LED();
+		ledRA4 = new LED();
+		ledRA5 = new LED();
+		BoxLEDra.add(ledRA1);
+		BoxLEDra.add(ledRA2);
+		BoxLEDra.add(ledRA3);
+		BoxLEDra.add(ledRA4);
+		BoxLEDra.add(ledRA5);
+		ledRB1 = new LED();
+		ledRB2 = new LED();
+		ledRB3 = new LED();
+		ledRB4 = new LED();
+		ledRB5 = new LED();
+		ledRB6 = new LED();
+		ledRB7 = new LED();
+		ledRB8 = new LED();
+		BoxLEDrb.add(ledRB1);
+		BoxLEDrb.add(ledRB2);
+		BoxLEDrb.add(ledRB3);
+		BoxLEDrb.add(ledRB4);
+		BoxLEDrb.add(ledRB5);
+		BoxLEDrb.add(ledRB6);
+		BoxLEDrb.add(ledRB7);
+		BoxLEDrb.add(ledRB8);
 		// Example for LEDs in state ON
-		led2.turnON();
-		led8.turnON();
-		led9.turnON();
-		getContentPane().setLayout(groupLayout);
-
+		ledRA1.turnState(commands.getRA0());
+		ledRA2.turnState(commands.getRA1());
+		ledRA3.turnState(commands.getRA2());
+		ledRA4.turnState(commands.getRA3());
+		ledRA5.turnState(commands.getRA4());
+		ledRB1.turnState(commands.getRB0());
+		ledRB2.turnState(commands.getRB1());
+		ledRB3.turnState(commands.getRB2());
+		ledRB4.turnState(commands.getRB3());
+		ledRB5.turnState(commands.getRB4());
+		ledRB6.turnState(commands.getRB5());
+		ledRB7.turnState(commands.getRB6());
+		ledRB8.turnState(commands.getRB7());
 		
+		// Layout for the hole panel
+		getContentPane().setLayout(groupLayout);
+				
+		// GUI Updater
+		Thread updater = new Thread();
+		updater.start();
 		
 		this.pack();
 	}
@@ -383,5 +501,13 @@ public class GUI extends JFrame {
 			
 		}
 		return intTable;
+	}
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		this.validate();
+		this.repaint();
 	}
 }
