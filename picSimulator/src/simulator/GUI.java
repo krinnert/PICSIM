@@ -295,7 +295,6 @@ public class GUI extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				new StartScreen();
 				play.setVisible(false);
 				pause.setVisible(true);
 			}
@@ -314,9 +313,10 @@ public class GUI extends JFrame {
 		Menu.setLayout(new BorderLayout(30,30));
 		JPanel west = new JPanel(new GridLayout(1,4,10,0));
 		JPanel toggle = new JPanel(new BorderLayout());
+		pause.setLocation(0, 12);
 		toggle.setBackground(null);
 		toggle.add(pause, BorderLayout.CENTER);
-		toggle.add(play, BorderLayout.CENTER);
+		toggle.add(play);
 		west.setBackground(null);
 		west.add(insert);
 		west.add(backward);
