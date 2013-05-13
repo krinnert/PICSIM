@@ -32,6 +32,8 @@ public class InstructionManager {
 		for (i = 0; i < befehlTree.size(); i++) {
 			befehlTree.get(i);
 			findeBefehl(befehlTree.get(i).getCode());
+			
+			GUIBelieferer();
 //			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
 //			System.out.println("******zeile:" + i +"  F Register: "+mem.readFileValue(0x0f));
 		}
@@ -196,7 +198,7 @@ public class InstructionManager {
 
 	public void movlw() {
 		akku.setAkku((opCode & 255));
-		System.out.println("MOVLW: Akkuwert danach: " + akku.getAkku());
+//		System.out.println("MOVLW: Akkuwert danach: " + akku.getAkku());
 	}
 
 	private void movwf() {
@@ -204,21 +206,21 @@ public class InstructionManager {
 		
 		if(stelle!=0){
 			akku.writeToMem(stelle);
-			System.out.println("MOVWF: Stelle: " + (opCode & 127)
-					+ "  Inhalt danach " + mem.readFileValue((opCode & 127)));
+//			System.out.println("MOVWF: Stelle: " + (opCode & 127)
+//					+ "  Inhalt danach " + mem.readFileValue((opCode & 127)));
 		}else{
 			akku.writeToMem(mem.readFileValue(4));
-			System.out.println("MOVWF: Stelle: " + mem.readFileValue(4)
-					+ "  Inhalt danach " + mem.readFileValue(mem.readFileValue(4)));
+//			System.out.println("MOVWF: Stelle: " + mem.readFileValue(4)
+//					+ "  Inhalt danach " + mem.readFileValue(mem.readFileValue(4)));
 		}
 		
-		System.out.println("MOVWF: Stelle: " + (opCode & 127)
-				+ "  Inhalt danach " + mem.readFileValue((opCode & 127)));
+//		System.out.println("MOVWF: Stelle: " + (opCode & 127)
+//				+ "  Inhalt danach " + mem.readFileValue((opCode & 127)));
 	}
 
 	private void clrw() {
 		akku.deleteAkku();
-		System.out.println("CLRW: Akku danach: " + akku.getAkku());
+//		System.out.println("CLRW: Akku danach: " + akku.getAkku());
 	}
 
 	private void incf() {
@@ -238,24 +240,24 @@ public class InstructionManager {
 		} else {
 			akku.setAkku(inhalt);
 		}
-		System.out.println("Incf -  RegisterStelle: " + (opCode & 127)
-				+ "Wert danach: " + mem.readFileValue((opCode & 127)));
+//		System.out.println("Incf -  RegisterStelle: " + (opCode & 127)
+//				+ "Wert danach: " + mem.readFileValue((opCode & 127)));
 	}
 
 	private void bcf() {
-		 System.out.println("bcf davor: "+mem.readFileValue(opCode&127));
+//		 System.out.println("bcf davor: "+mem.readFileValue(opCode&127));
 		int bit = opCode >> 7;
 		bit &= 0b111;
 		mem.writeBitValue((opCode & 127), bit, 0);
-		 System.out.println("nach bcf: "+mem.readFileValue(opCode&127));
+//		 System.out.println("nach bcf: "+mem.readFileValue(opCode&127));
 	}
 
 	private void bsf() {
-		System.out.println("BSF davor: " + mem.readFileValue(opCode & 127));
+//		System.out.println("BSF davor: " + mem.readFileValue(opCode & 127));
 		int bit = opCode >> 7;
 		bit &= 0b111;
 		mem.writeBitValue((opCode & 127), bit, 1);
-		System.out.println("Bit set file: " + mem.readFileValue(opCode & 127));
+//		System.out.println("Bit set file: " + mem.readFileValue(opCode & 127));
 	}
 
 	private void addlw() {
@@ -284,7 +286,7 @@ public class InstructionManager {
 		}
 
 		akku.setAkku(result);
-		 System.out.println(akku.getAkku());
+//		 System.out.println(akku.getAkku());
 	}
 	private void addwf(){
 		int adr = opCode & 127;
@@ -327,18 +329,18 @@ public class InstructionManager {
 		speicherort &= 0b1;
 		if (speicherort == 0) {
 			akku.setAkku(inhalt);
-			System.out.println("HELP --- Inhalt indirect: "+ mem.readFileValue(0));
-			System.out.println("akku nach addwf: " + inhalt);
+//			System.out.println("HELP --- Inhalt indirect: "+ mem.readFileValue(0));
+//			System.out.println("akku nach addwf: " + inhalt);
 		} else {
 			mem.writeFileValue(opCode & 127, inhalt);
-			System.out.println("Speicherst" + (opCode&127) + "nach addwf: "+ inhalt);
+//			System.out.println("Speicherst" + (opCode&127) + "nach addwf: "+ inhalt);
 		}
 		
 		
 	}
 
 	private void subwf() {
-		System.out.println("Memory: "+mem.readFileValue(opCode&127) +" - Minus - "+ akku.getAkku());
+//		System.out.println("Memory: "+mem.readFileValue(opCode&127) +" - Minus - "+ akku.getAkku());
 		int adr = opCode & 127;
 		int inhalt = mem.readFileValue(adr) - akku.getAkku();
 		int speicherort = opCode >> 7;
@@ -375,7 +377,7 @@ public class InstructionManager {
 		speicherort &= 0b1;
 		if (speicherort == 0) {
 			akku.setAkku(inhalt);
-			System.out.println("Akku nach subwf: "+ akku.getAkku());
+//			System.out.println("Akku nach subwf: "+ akku.getAkku());
 		} else {
 			mem.writeFileValue(opCode & 127, inhalt);
 		}
@@ -413,7 +415,7 @@ public class InstructionManager {
 	private void goTo() {
 		i = (opCode & 2047) - 1;
 		// i= mem.getLath(3, 4) + opCode & 2047;
-		System.out.println("GOTO: gehe zu: " + i);
+//		System.out.println("GOTO: gehe zu: " + i);
 //		if (i==40) {
 //			mem.writeBitValue(6, 0, 1);
 //		}
@@ -427,7 +429,7 @@ public class InstructionManager {
 
 	private void comf() {
 		// inhalt komplämentieren
-		System.out.println("Mem vor com: "+ (mem.readFileValue(opCode&127)));
+//		System.out.println("Mem vor com: "+ (mem.readFileValue(opCode&127)));
 		int inhalt = mem.readFileValue((opCode & 127));
 		inhalt = ~inhalt;
 		inhalt &= 255;
@@ -446,17 +448,17 @@ public class InstructionManager {
 		speicherort &= 0b1;
 		if (speicherort == 0) {
 			akku.setAkku(inhalt);
-			System.out.println("Akku nach com: "+akku.getAkku());
+//			System.out.println("Akku nach com: "+akku.getAkku());
 		} else {
 			mem.writeFileValue(opCode & 127, inhalt);
-			System.out.println("Register nach com: "+mem.readFileValue(opCode&127));
+//			System.out.println("Register nach com: "+mem.readFileValue(opCode&127));
 		}
 	}
 
 	private void decfsz() {
 		
-		System.out.println("DEC nach durchlauf: " +a + "  "+ (mem.readFileValue(12)-1));
-		System.out.println();
+//		System.out.println("DEC nach durchlauf: " +a + "  "+ (mem.readFileValue(12)-1));
+//		System.out.println();
 //		if (a==17) {
 //			System.exit(1);	
 //		}
@@ -476,7 +478,7 @@ public class InstructionManager {
 
 		} else {
 			nop();
-			System.out.println("Springe durch decfsz");
+//			System.out.println("Springe durch decfsz");
 			i++;
 		}
 	}
@@ -505,7 +507,7 @@ public class InstructionManager {
 		mem.schreibeAufStack(i );
 
 		i = adr;
-		System.out.println("gehe zu adr: " + i);
+//		System.out.println("gehe zu adr: " + i);
 		// i= mem.getLath(3, 4) + adr;
 		// System.out.println(mem.leseStack());
 	}
@@ -514,7 +516,7 @@ public class InstructionManager {
 		int value = opCode & 255;
 		akku.setAkku(value);
 		i = mem.leseStack();
-		System.out.println("gehe zurück zu Adr: " + i);
+//		System.out.println("gehe zurück zu Adr: " + i);
 	}
 
 	private void reTurn() {
@@ -537,6 +539,9 @@ public class InstructionManager {
 		System.out.println(mem.readFileValue(0x11));
 		System.out.println(mem.readFileValue(0x12));
 		System.out.println(mem.readFileValue(0x1f));
+		
+	}
+	public void GUIBelieferer(){
 		
 	}
 
