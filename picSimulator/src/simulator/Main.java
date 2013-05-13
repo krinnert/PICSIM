@@ -29,7 +29,9 @@ public class Main {
 		textTree= datei.getTextTree();
 		
 		GUI gui= new GUI(datei,befehl);
-		Thread.sleep(1500);
+
+		Thread.sleep(1000);
+
 		start.dispose();
 
 		
