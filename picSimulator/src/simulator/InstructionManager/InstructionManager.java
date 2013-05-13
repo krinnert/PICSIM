@@ -17,7 +17,7 @@ public class InstructionManager {
 	private BitSet opCodeBitSet = new BitSet(14);
 	private DataMemory data = new DataMemory();
 	public int i = 0;
-	private boolean pause=false;
+	private boolean pause=true;
 	private boolean next=false;
 	
 	private boolean ra0;
