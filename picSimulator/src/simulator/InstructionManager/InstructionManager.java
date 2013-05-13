@@ -96,7 +96,13 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 0)==0){
 			ra0=false;
 		}
-		return ra0;
+		
+		if (mem.readBitValue(0x85, 0)==1) {
+			return false;	
+		} else {
+			return ra0;
+		}
+		
 	}
 	public boolean getRA1(){
 		if(mem.readBitValue(5, 1)==1){
@@ -105,7 +111,12 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 1)==0){
 			ra1=false;
 		}
-		return ra1;
+		if (mem.readBitValue(0x85, 1)==1) {
+			return false;	
+		} else {
+			return ra1;
+		}
+		
 	}
 	public boolean getRA2(){
 		if(mem.readBitValue(5, 2)==1){
@@ -114,7 +125,11 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 2)==0){
 			ra2=false;
 		}
-		return ra2;
+		if (mem.readBitValue(0x85, 2)==1) {
+			return false;	
+		} else {
+			return ra2;
+		}
 	}
 	public boolean getRA3(){
 		if(mem.readBitValue(5, 3)==1){
@@ -123,7 +138,11 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 3)==0){
 			ra3=false;
 		}
-		return ra3;
+		if (mem.readBitValue(0x85, 3)==1) {
+			return false;	
+		} else {
+			return ra3;
+		}
 	}
 	public boolean getRA4(){
 		if(mem.readBitValue(5, 4)==1){
@@ -132,7 +151,11 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 4)==0){
 			ra4=false;
 		}
-		return ra4;
+		if (mem.readBitValue(0x85, 4)==1) {
+			return false;	
+		} else {
+			return ra4;
+		}
 	}
 	public boolean getRB0(){
 		if(mem.readBitValue(6, 0)==1){
@@ -141,7 +164,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 0)==0){
 			rb0=false;
 		}
-		return rb0;
+		if (mem.readBitValue(0x86, 0)==1) {
+			return false;	
+		} else {
+			return rb0;
+		}
 	}
 	public boolean getRB1(){
 		if(mem.readBitValue(6, 1)==1){
@@ -150,7 +177,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 1)==0){
 			rb1=false;
 		}
-		return rb1;
+		if (mem.readBitValue(0x86, 1)==1) {
+			return false;	
+		} else {
+			return rb1;
+		}
 	}
 	public boolean getRB2(){
 		if(mem.readBitValue(6, 2)==1){
@@ -159,7 +190,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 2)==0){
 			rb2=false;
 		}
-		return rb2;
+		if (mem.readBitValue(0x86, 2)==1) {
+			return false;	
+		} else {
+			return rb2;
+		}
 	}
 	public boolean getRB3(){
 		if(mem.readBitValue(6, 3)==1){
@@ -168,7 +203,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 3)==0){
 			rb3=false;
 		}
-		return rb3;
+		if (mem.readBitValue(0x86, 3)==1) {
+			return false;	
+		} else {
+			return rb3;
+		}
 	}
 	public boolean getRB4(){
 		if(mem.readBitValue(6, 4)==1){
@@ -177,7 +216,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 4)==4){
 			rb4=false;
 		}
-		return rb4;
+		if (mem.readBitValue(0x86, 4)==1) {
+			return false;	
+		} else {
+			return rb4;
+		}
 	}
 	public boolean getRB5(){
 		if(mem.readBitValue(6, 5)==1){
@@ -186,7 +229,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 5)==0){
 			rb5=false;
 		}
-		return rb5;
+		if (mem.readBitValue(0x86, 5)==1) {
+			return false;	
+		} else {
+			return rb5;
+		}
 	}
 	public boolean getRB6(){
 		if(mem.readBitValue(6, 6)==1){
@@ -195,7 +242,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 6)==0){
 			rb6=false;
 		}
-		return rb6;
+		if (mem.readBitValue(0x86, 6)==1) {
+			return false;	
+		} else {
+			return rb6;
+		}
 	}
 	public boolean getRB7(){
 		if(mem.readBitValue(6, 7)==1){
@@ -204,7 +255,11 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 7)==0){
 			rb7=false;
 		}
-		return rb7;
+		if (mem.readBitValue(0x86, 7)==1) {
+			return false;	
+		} else {
+			return rb7;
+		}
 	}
 	public void setRA0(int value){
 		mem.writeBitValue(5, 0, value);
