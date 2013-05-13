@@ -82,6 +82,9 @@ public class InstructionManager {
 		return mem.readBitValue(0x83, 2);
 	}
 	
+	public int getAktuelleZeile(){
+		return i; 
+	}
 	
 	public int a = 0;
 
