@@ -27,12 +27,12 @@ public class LED extends JLabel {
 		position++;
 	}
 	
-	public void turnON() {
-		this.setIcon(LEDon);
-	}
-	
-	public void turnOFF() {
-		this.setIcon(LEDoff);
+	public void turnState(boolean state) {
+		if( state == true ) {
+			this.setIcon(LEDon);
+		} else if( state == false ) {
+			this.setIcon(LEDoff);
+		} else {}
 	}
 	
 }
