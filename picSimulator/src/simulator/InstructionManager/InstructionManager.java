@@ -83,7 +83,7 @@ public class InstructionManager {
 	}
 	
 	public int getAktuelleZeile(){
-		return i; 
+		return befehlTree.get(i).getProgrammzeile(); 
 	}
 	
 	public int a = 0;
@@ -800,6 +800,7 @@ public class InstructionManager {
 		i = mem.leseStack();
 	}
 	public void ausgabe(){
+		//nur zu testzwecken
 		System.out.println("Reg: Akku" + akku.getAkku());
 		System.out.println("Reg: 0  " + mem.readFileValue(0));
 		System.out.println("Reg: 2  " + mem.readFileValue(2));
