@@ -46,6 +46,9 @@ public class GUI extends JFrame implements Runnable {
 	final DateiEinlesen readFile;
 	final InstructionManager commands;
 	
+	public Thread t2=null;
+	public Thread updater=null;
+	
 	private JList<String> list;
 	private JTable table;
 	private DataMemory mem;
@@ -409,9 +412,32 @@ public class GUI extends JFrame implements Runnable {
 			public void mousePressed(MouseEvent arg0) {
 				play.setVisible(false);
 				pause.setVisible(true);
-				list.setSelectedIndex(commands.getAktuelleZeile());
-				commands.starteAbarbeitung(befehlTree);
-				commands.setPause(false);
+				
+				
+				if(t2 == null){
+				
+				Thread t3 = new Thread(new Runnable(){
+					@Override
+					public void run() {
+					list.setSelectedIndex(commands.getAktuelleZeile());
+					}
+				});
+				
+				Thread t2 = new Thread(new Runnable(){
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						commands.setPause(false);
+						commands.starteAbarbeitung(befehlTree);
+						
+					}
+					
+				});
+				
+				t2.start();
+				t3.start();
+				}
 				
 			}
 			@Override
@@ -491,9 +517,10 @@ public class GUI extends JFrame implements Runnable {
 		getContentPane().setLayout(groupLayout);
 				
 		// GUI Updater
-		Thread updater = new Thread();
+		if(updater == null){
+		updater = new Thread();
 		updater.start();
-		
+		}
 		this.pack();
 	}
 	

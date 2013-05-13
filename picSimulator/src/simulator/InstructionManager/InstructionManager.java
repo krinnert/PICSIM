@@ -48,8 +48,13 @@ public class InstructionManager {
 				}
 				
 			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			GUIBelieferer();
 			befehlTree.get(i);
 			findeBefehl(befehlTree.get(i).getCode());
 			
@@ -84,7 +89,7 @@ public class InstructionManager {
 	
 	public int getAktuelleZeile(){
 		//changesv
-		return i;
+		return befehlTree.get(i).getProgrammzeile(); 
 	}
 	
 	public int a = 0;
@@ -693,14 +698,14 @@ public class InstructionManager {
 	private void goTo() {
 		i = (opCode & 2047) - 1;
 		// i= mem.getLath(3, 4) + opCode & 2047;
-//		System.out.println("GOTO: gehe zu: " + i);
-//		if (i==40) {
-//			mem.writeBitValue(6, 0, 1);
-//		}
-//		if (i==46) {
-//			ausgabe();
+		System.out.println("GOTO: gehe zu: " + i);
+		if (i==40) {
+			mem.writeBitValue(6, 0, 1);
+		}
+		if (i==46) {
+			ausgabe();
 //			System.exit(1);
-//		}
+		}
 		// Achtung: es entsteht dauerschleife wenn rb=0 --- muss in GUI gesetzt
 		// werden damits weitergeht
 	}
@@ -820,9 +825,6 @@ public class InstructionManager {
 		System.out.println(mem.readFileValue(0x1f));
 		
 	}
-	public void GUIBelieferer(){
-		
-		
-	}
+
 
 }
