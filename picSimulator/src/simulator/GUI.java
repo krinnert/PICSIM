@@ -3,6 +3,7 @@ package simulator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.SplashScreen;
@@ -49,26 +50,11 @@ public class GUI extends JFrame {
 	public GUI(final DateiEinlesen readFile, InstructionManager commands) {
 		super("pic Simulator");
 		mem = commands.getMemory();
-		
+		Dimension displaySize = getToolkit().getScreenSize();
 		
 		setSize(1200, 800);
+		setLocation(displaySize.width/2 - getWidth()/2, displaySize.height/2 - getHeight()/2);
 		setVisible(true);
-		
-//		final SplashScreen splash = SplashScreen.getSplashScreen();
-//        if (splash == null) {
-//            System.out.println("SplashScreen.getSplashScreen() returned null");
-//            return;
-//        }
-//        Graphics2D g = splash.createGraphics();
-//        if (g == null) {
-//            System.out.println("g is null");
-//            return;
-//        }
-        
-		/*  Attempting to show a Load the Application Screen
-		JLayeredPane layerPane = new JLayeredPane();
-		add(layerPane);
-		*/
 		
 		addComponentListener(new ComponentListener() {
 			@Override

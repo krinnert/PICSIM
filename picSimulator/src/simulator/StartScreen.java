@@ -12,19 +12,18 @@ public class StartScreen extends JFrame {
 
 	public StartScreen() {
 		// Get the display-size
-		Dimension dim = getToolkit().getScreenSize();
-		setSize(1920/2, 1080/2);
+		Dimension displaySize = getToolkit().getScreenSize();
 				
+		// Load Image
 		JPanel logo = new JPanel();
-		JLabel img = new JLabel(new ImageIcon(getToolkit().getImage("./resources/splashScreen.png").getScaledInstance(1920/2, 1080/2, Image.SCALE_SMOOTH)));
+		JLabel img = new JLabel(new ImageIcon(getToolkit().getImage("./resources/splashScreen.png").getScaledInstance(displaySize.width+2, displaySize.height+2, Image.SCALE_SMOOTH)));
 		logo.add(img);
 		add(logo);
 		
+		// Layout settings
 		setUndecorated(true);
 		setVisible(true);
-		//setLocationRelativeTo(getParent());
-		// Releatove to the display
-		setLocation(dim.width/2 - this.getWidth()/2, dim.height/2 - this.getHeight()/2);
+		setLocation(-6,-6);
 		setAlwaysOnTop(true);
 		this.pack();
 	}

@@ -19,7 +19,7 @@ public class Main {
 	static TreeMap<Integer, Befehl> befehlTree = new TreeMap<Integer, Befehl>();
 	static TreeMap<Integer, String> textTree = new TreeMap<Integer, String>();
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws InterruptedException{
 		
 		StartScreen start = new StartScreen();
 		InstructionManager befehl= new InstructionManager();
@@ -29,6 +29,7 @@ public class Main {
 		textTree= datei.getTextTree();
 		
 		GUI gui= new GUI(datei,befehl);
+		Thread.sleep(1500);
 		start.dispose();
 
 		
