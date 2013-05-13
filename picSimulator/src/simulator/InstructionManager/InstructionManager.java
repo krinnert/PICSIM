@@ -17,27 +17,229 @@ public class InstructionManager {
 	private BitSet opCodeBitSet = new BitSet(14);
 	private DataMemory data = new DataMemory();
 	public int i = 0;
+	private boolean pause=false;
+	private boolean next=false;
+	
+	private boolean ra0;
+	private boolean ra1;
+	private boolean ra2;
+	private boolean ra3;
+	private boolean ra4;
+	private boolean rb0;
+	private boolean rb1;
+	private boolean rb2;
+	private boolean rb3;
+	private boolean rb4;
+	private boolean rb5;
+	private boolean rb6;
+	private boolean rb7;
+
+
+	// List mit allen befehlen -> ruft ausführen aus
+	public void starteAbarbeitung(TreeMap befehlBaum) {
+		befehlTree = befehlBaum;
+		for (i = 0; i < befehlTree.size(); i++) {
+			
+			while(pause==true){
+				
+				if(next==true){
+					next=false;
+					break;
+				}
+				
+			}
+			
+			GUIBelieferer();
+			befehlTree.get(i);
+			findeBefehl(befehlTree.get(i).getCode());
+			
+//			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
+//			System.out.println("******zeile:" + i +"  F Register: "+mem.readFileValue(0x0f));
+		}
+
+	}
+	public boolean getNext() {
+		return next;
+	}
+
+
+	public void setNext(boolean next) {
+		this.next = next;
+	}
 
 	public int a = 0;
 
+	public boolean getRA0(){
+		if(mem.readBitValue(5, 0)==1){
+			ra0=true;
+		}
+		if(mem.readBitValue(5, 0)==0){
+			ra0=false;
+		}
+		return ra0;
+	}
+	public boolean getRA1(){
+		if(mem.readBitValue(5, 1)==1){
+			ra1=true;
+		}
+		if(mem.readBitValue(5, 1)==0){
+			ra1=false;
+		}
+		return ra1;
+	}
+	public boolean getRA2(){
+		if(mem.readBitValue(5, 2)==1){
+			ra2=true;
+		}
+		if(mem.readBitValue(5, 2)==0){
+			ra2=false;
+		}
+		return ra2;
+	}
+	public boolean getRA3(){
+		if(mem.readBitValue(5, 3)==1){
+			ra3=true;
+		}
+		if(mem.readBitValue(5, 3)==0){
+			ra3=false;
+		}
+		return ra3;
+	}
+	public boolean getRA4(){
+		if(mem.readBitValue(5, 4)==1){
+			ra4=true;
+		}
+		if(mem.readBitValue(5, 4)==0){
+			ra4=false;
+		}
+		return ra4;
+	}
+	public boolean getRB0(){
+		if(mem.readBitValue(6, 0)==1){
+			rb0=true;
+		}
+		if(mem.readBitValue(6, 0)==0){
+			rb0=false;
+		}
+		return rb0;
+	}
+	public boolean getRB1(){
+		if(mem.readBitValue(6, 1)==1){
+			rb1=true;
+		}
+		if(mem.readBitValue(6, 1)==0){
+			rb1=false;
+		}
+		return rb1;
+	}
+	public boolean getRB2(){
+		if(mem.readBitValue(6, 2)==1){
+			rb2=true;
+		}
+		if(mem.readBitValue(6, 2)==0){
+			rb2=false;
+		}
+		return rb2;
+	}
+	public boolean getRB3(){
+		if(mem.readBitValue(6, 3)==1){
+			rb3=true;
+		}
+		if(mem.readBitValue(6, 3)==0){
+			rb3=false;
+		}
+		return rb3;
+	}
+	public boolean getRB4(){
+		if(mem.readBitValue(6, 4)==1){
+			rb4=true;
+		}
+		if(mem.readBitValue(6, 4)==4){
+			rb4=false;
+		}
+		return rb4;
+	}
+	public boolean getRB5(){
+		if(mem.readBitValue(6, 5)==1){
+			rb5=true;
+		}
+		if(mem.readBitValue(6, 5)==0){
+			rb5=false;
+		}
+		return rb5;
+	}
+	public boolean getRB6(){
+		if(mem.readBitValue(6, 6)==1){
+			rb6=true;
+		}
+		if(mem.readBitValue(6, 6)==0){
+			rb6=false;
+		}
+		return rb6;
+	}
+	public boolean getRB7(){
+		if(mem.readBitValue(6, 7)==1){
+			rb7=true;
+		}
+		if(mem.readBitValue(6, 7)==0){
+			rb7=false;
+		}
+		return rb7;
+	}
+	public void setRA0(int value){
+		mem.writeBitValue(5, 0, value);
+	}
+	public void setRA1(int value){
+		mem.writeBitValue(5, 1, value);
+	}
+	public void setRA2(int value){
+		mem.writeBitValue(5, 2, value);
+	}
+	public void setRA3(int value){
+		mem.writeBitValue(5, 3, value);
+	}
+	public void setRA4(int value){
+		mem.writeBitValue(5, 4, value);
+	}
+	public void setRB0(int value){
+		mem.writeBitValue(6, 0, value);
+	}
+	public void setRB1(int value){
+		mem.writeBitValue(6, 1, value);
+	}
+	public void setRB2(int value){
+		mem.writeBitValue(6, 2, value);
+	}
+	public void setRB3(int value){
+		mem.writeBitValue(6, 3, value);
+	}
+	public void setRB4(int value){
+		mem.writeBitValue(6, 4, value);
+	}
+	public void setRB5(int value){
+		mem.writeBitValue(6, 5, value);
+	}
+	public void setRB6(int value){
+		mem.writeBitValue(6, 6, value);
+	}
+	public void setRB7(int value){
+		mem.writeBitValue(6, 7, value);
+	}
+
+	
 	
 	public DataMemory getMemory(){
 		return data;
 	}
 	
 	
-	// List mit allen befehlen -> ruft ausführen aus
-	public void starteAbarbeitung(TreeMap befehlBaum) {
-		befehlTree = befehlBaum;
-		for (i = 0; i < befehlTree.size(); i++) {
-			befehlTree.get(i);
-			findeBefehl(befehlTree.get(i).getCode());
-			
-			GUIBelieferer();
-//			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
-//			System.out.println("******zeile:" + i +"  F Register: "+mem.readFileValue(0x0f));
-		}
+	public boolean getPause() {
+		return pause;
+	}
 
+
+	public void setPause(boolean pause) {
+		this.pause = pause;
 	}
 
 	// sucht einen Befehl und führt ihn aus
@@ -542,6 +744,7 @@ public class InstructionManager {
 		
 	}
 	public void GUIBelieferer(){
+		
 		
 	}
 
