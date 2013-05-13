@@ -66,9 +66,26 @@ public class InstructionManager {
 	public void setNext(boolean next) {
 		this.next = next;
 	}
-
+	
+	
+	//Getter für special register
+	public int getAkku(){
+		return akku.getAkku();
+	}
+	public int getC(){
+		return mem.readBitValue(0x83, 0);
+	}
+	public int getDC(){
+		return mem.readBitValue(0x83, 1);
+	}
+	public int getZ(){
+		return mem.readBitValue(0x83, 2);
+	}
+	
+	
 	public int a = 0;
 
+	//getter und setter für ein/ausgänge
 	public boolean getRA0(){
 		if(mem.readBitValue(5, 0)==1){
 			ra0=true;
