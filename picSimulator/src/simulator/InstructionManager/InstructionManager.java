@@ -40,7 +40,15 @@ public class InstructionManager {
 		befehlTree = befehlBaum;
 		for (i = 0; i < befehlTree.size(); i++) {
 			
-			while(pause==true){
+			while(getPause()==true){
+				
+				//hier ein sleep weil sonst true nicht erkannt wird weil takt zu hoch ist
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				if(next==true){
 					next=false;
@@ -49,7 +57,7 @@ public class InstructionManager {
 				
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,8 +65,7 @@ public class InstructionManager {
 			
 			befehlTree.get(i);
 			findeBefehl(befehlTree.get(i).getCode());
-			
-			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
+//			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
 //			System.out.println("******zeile:" + i +"  F Register: "+mem.readFileValue(0x0f));
 		}
 
@@ -310,6 +317,8 @@ public class InstructionManager {
 	
 	
 	public DataMemory getMemory(){
+//		return data;
+		data = mem;
 		return data;
 	}
 	
@@ -319,8 +328,8 @@ public class InstructionManager {
 	}
 
 
-	public void setPause(boolean pause) {
-		this.pause = pause;
+	public void setPause(boolean pauses) {
+		pause = pauses;
 	}
 
 	// sucht einen Befehl und führt ihn aus
@@ -698,10 +707,10 @@ public class InstructionManager {
 	private void goTo() {
 		i = (opCode & 2047) - 1;
 		// i= mem.getLath(3, 4) + opCode & 2047;
-		System.out.println("GOTO: gehe zu: " + i);
-		if (i==40) {
-			mem.writeBitValue(6, 0, 1);
-		}
+//		System.out.println("GOTO: gehe zu: " + i);
+//		if (i==40) {
+//			mem.writeBitValue(6, 0, 1);
+//		}
 		if (i==46) {
 			ausgabe();
 //			System.exit(1);

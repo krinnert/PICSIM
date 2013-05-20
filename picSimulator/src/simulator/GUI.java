@@ -47,7 +47,12 @@ public class GUI extends JFrame implements Runnable {
 	final InstructionManager commands;
 	
 	public Thread t2=null;
+	public Thread t3=null;
 	public Thread updater=null;
+	public Thread ledStatus=null;
+	
+	public int on; 
+	private boolean ra0;
 	
 	private JList<String> list;
 	private JTable table;
@@ -166,138 +171,517 @@ public class GUI extends JFrame implements Runnable {
 		
 		list.setEnabled(false);
 		
-		int on;
-		JCheckBox S1 = new JCheckBox("RA0");
+		final JCheckBox S1 = new JCheckBox("RA0");
 		S1.setBorder(null);
 		S1.setBounds(12, 20, 95, 25);
 		BoxSchalter.add(S1);
-		if(S1.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRA0(on);
+//		if(S1.isSelected() == true){
+//			 on = 1;
+//		} else {
+//			on = 0;
+//		}
+//		commands.setRA0(on);
 		
-		JCheckBox S2 = new JCheckBox("RA1");
+		S1.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S1.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRA0(on);
+			}
+		});
+		
+		final JCheckBox S2 = new JCheckBox("RA1");
 		S2.setBorder(null);
 		S2.setBounds(12, 47, 95, 25);
 		BoxSchalter.add(S2);
-		if(S2.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRA1(on);
+//		if(S2.isSelected() == true){
+//			 on = 1;
+//		} else {
+//			on = 0;
+//		}
+//		commands.setRA1(on);
+			S2.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S2.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRA1(on);
+			}
+		});
 		
-		JCheckBox S3 = new JCheckBox("RA2");
+		final JCheckBox S3 = new JCheckBox("RA2");
 		S3.setBorder(null);
 		S3.setBounds(12, 75, 95, 25);
 		BoxSchalter.add(S3);
-		if(S3.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRA2(on);
+//		if(S3.isSelected() == true){
+//			 on = 1;
+//		} else {
+//			on = 0;
+//		}
+//		commands.setRA2(on);
+			S3.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S3.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRA2(on);
+			}
+		});
 		
-		JCheckBox S4 = new JCheckBox("RA3");
+		
+		final JCheckBox S4 = new JCheckBox("RA3");
 		S4.setBorder(null);
 		S4.setBounds(12, 103, 95, 25);
 		BoxSchalter.add(S4);
-		if(S4.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRA3(on);
+		S4.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S4.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRA3(on);
+			}
+		});
 		
-		JCheckBox S5 = new JCheckBox("RA4");
+		final JCheckBox S5 = new JCheckBox("RA4");
 		S5.setBorder(null);
 		S5.setBounds(12, 132, 95, 25);
 		BoxSchalter.add(S5);
-		if(S5.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRA4(on);
+			S5.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S5.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRA4(on);
+			}
+		});
 		
-		JCheckBox S6 = new JCheckBox("RB0");
+		final JCheckBox S6 = new JCheckBox("RB0");
 		S6.setBorder(null);
 		S6.setBounds(12, 161, 95, 25);
 		BoxSchalter.add(S6);
-		if(S6.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRB0(on);
+			S6.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S6.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRB0(on);
+			}
+		});
 		
-		JCheckBox S7 = new JCheckBox("RB1");
+		final JCheckBox S7 = new JCheckBox("RB1");
 		S7.setBorder(null);
 		S7.setBounds(12, 188, 95, 25);
 		BoxSchalter.add(S7);
-		if(S7.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRB1(on);
+			S7.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S7.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRB1(on);
+			}
+		});
 		
-		JCheckBox S8 = new JCheckBox("RB2");
+		final JCheckBox S8 = new JCheckBox("RB2");
 		S8.setBorder(null);
 		S8.setBounds(12, 215, 95, 25);
 		BoxSchalter.add(S8);
-		if(S8.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRB2(on);
+			S8.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S8.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRB2(on);
+			}
+		});
 		
-		JCheckBox S9 = new JCheckBox("RB3");
+		final JCheckBox S9 = new JCheckBox("RB3");
 		S9.setBorder(null);
 		S9.setBounds(12, 243, 95, 25);
 		BoxSchalter.add(S9);
-		if(S9.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRB3(on);
+			S9.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S9.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRB3(on);
+			}
+		});
 		
-		JCheckBox S10 = new JCheckBox("RB4");
+		final JCheckBox S10 = new JCheckBox("RB4");
 		S10.setBorder(null);
 		S10.setBounds(12, 271, 95, 25);
 		BoxSchalter.add(S10);
-		if(S10.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRB4(on);
+			S10.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S10.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRB4(on);
+			}
+		});
 		
-		JCheckBox S11 = new JCheckBox("RB5");
+		final JCheckBox S11 = new JCheckBox("RB5");
 		S11.setBorder(null);
 		S11.setBounds(12, 300, 95, 25);
 		BoxSchalter.add(S11);
-		if(S11.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRB5(on);
+			S11.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S11.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRB5(on);
+			}
+		});
 		
-		JCheckBox S12 = new JCheckBox("RB6");
+		final JCheckBox S12 = new JCheckBox("RB6");
 		S12.setBorder(null);
 		S12.setBounds(12, 329, 95, 25);
 		BoxSchalter.add(S12);
-		if(S12.isSelected() == true){
-			 on = 1;
-		} else {
-			on = 0;
-		}
-		commands.setRB6(on);
+			S12.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(S12.isSelected() == true){
+					 on = 1;
+				} else {
+					on = 0;
+				}
+				commands.setRB6(on);
+			}
+		});
 		
 		
 		
@@ -341,6 +725,39 @@ public class GUI extends JFrame implements Runnable {
 		ImageButton forward = new ImageButton("Forward.png", "ForwardMO.png", "ForwardP.png", "Forwards");
 		ImageButton settings = new ImageButton("settings.png","settingsMO.png", "settingsPressed.png", "Settings");
 		pause.setVisible(false);
+		
+		//event for forward
+		forward.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				commands.setNext(true);
+			}
+		});
 		
 		// Events of the Menu-Items
 		insert.addMouseListener(new MouseListener() {
@@ -391,6 +808,7 @@ public class GUI extends JFrame implements Runnable {
 			public void mousePressed(MouseEvent arg0) {
 				play.setVisible(true);
 				pause.setVisible(false);
+
 				commands.setPause(true);
 			}
 			@Override
@@ -412,22 +830,16 @@ public class GUI extends JFrame implements Runnable {
 			public void mousePressed(MouseEvent arg0) {
 				play.setVisible(false);
 				pause.setVisible(true);
-				
+			
+				commands.setPause(false);
 				
 				if(t2 == null){
-				
-				Thread t3 = new Thread(new Runnable(){
-					@Override
-					public void run() {
-					list.setSelectedIndex(commands.getAktuelleZeile());
-					}
-				});
-				
-				Thread t2 = new Thread(new Runnable(){
+				t2 = new Thread(new Runnable(){
 
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
+//						System.out.println("Thread für abarbeitung");
 						commands.setPause(false);
 						commands.starteAbarbeitung(befehlTree);
 						
@@ -436,7 +848,57 @@ public class GUI extends JFrame implements Runnable {
 				});
 				
 				t2.start();
-				t3.start();
+				}
+				
+				if(ledStatus == null){
+					ledStatus = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							
+							while (true) {
+								
+								try {
+									Thread.sleep(300);
+//									// Example for LEDs in state ON
+//									ledRA1.turnState(commands.getRA0());
+//									ledRA2.turnState(commands.getRA1());
+//									ledRA3.turnState(commands.getRA2());
+//									ledRA4.turnState(commands.getRA3());
+//									ledRA5.turnState(commands.getRA4());
+//									ledRB1.turnState(commands.getRB0());
+//									ledRB2.turnState(commands.getRB1());
+//									ledRB3.turnState(commands.getRB2());
+//									ledRB4.turnState(commands.getRB3());
+//									ledRB5.turnState(commands.getRB4());
+//									ledRB6.turnState(commands.getRB5());
+//									ledRB7.turnState(commands.getRB6());
+//									ledRB8.turnState(commands.getRB7());
+									
+//									System.out.print(mem.readFileValue(0x85));
+								} catch (InterruptedException e) {
+								}
+								
+								
+								
+							}
+							
+						}
+					});
+				ledStatus.start();
+				}
+				
+				if(t3 == null){
+//					System.out.println("Thread für zeilen");
+					t3 = new Thread(new Runnable(){
+						@Override
+						public void run() {
+							while(true){
+						list.setSelectedIndex(commands.getAktuelleZeile()-1);
+							}
+						}
+					});
+					t3.start();
 				}
 				
 			}
@@ -498,26 +960,15 @@ public class GUI extends JFrame implements Runnable {
 		BoxLEDrb.add(ledRB6);
 		BoxLEDrb.add(ledRB7);
 		BoxLEDrb.add(ledRB8);
-		// Example for LEDs in state ON
-		ledRA1.turnState(commands.getRA0());
-		ledRA2.turnState(commands.getRA1());
-		ledRA3.turnState(commands.getRA2());
-		ledRA4.turnState(commands.getRA3());
-		ledRA5.turnState(commands.getRA4());
-		ledRB1.turnState(commands.getRB0());
-		ledRB2.turnState(commands.getRB1());
-		ledRB3.turnState(commands.getRB2());
-		ledRB4.turnState(commands.getRB3());
-		ledRB5.turnState(commands.getRB4());
-		ledRB6.turnState(commands.getRB5());
-		ledRB7.turnState(commands.getRB6());
-		ledRB8.turnState(commands.getRB7());
+		
+		
 		
 		// Layout for the hole panel
 		getContentPane().setLayout(groupLayout);
 				
 		// GUI Updater
 		if(updater == null){
+//			System.out.println("Updater thread von felix");
 		updater = new Thread();
 		updater.start();
 		}

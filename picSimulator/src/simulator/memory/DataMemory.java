@@ -41,7 +41,6 @@ public class DataMemory {
 
 		// SFR mit vorbelegten Werten füllen, wenn diese nicht 0 oder unbekannt
 		// sind
-
 		// 03h Status: 0001 1xxx
 		memory[0x03] = 0b00011000;
 		// 81h TMR0:1111 1111
@@ -50,6 +49,7 @@ public class DataMemory {
 		memory[0x83] = 0b00011000;
 		// 85h TRIS A ---1 1111:
 		memory[0x85] = 0b00011111;
+//		memory[0x85] = 0b00000000;
 		// 86h TRIS B 1111 1111
 		memory[0x86] = 0b11111111;
 	}
