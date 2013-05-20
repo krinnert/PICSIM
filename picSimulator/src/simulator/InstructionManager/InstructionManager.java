@@ -20,6 +20,9 @@ public class InstructionManager {
 	private boolean pause=true;
 	private boolean next=false;
 	
+	private int[] RAio = new int[5];
+	private int[] RBio = new int[8];
+	
 	private boolean ra0;
 	private boolean ra1;
 	private boolean ra2;
@@ -38,6 +41,16 @@ public class InstructionManager {
 	// List mit allen befehlen -> ruft ausführen aus
 	public void starteAbarbeitung(TreeMap befehlBaum) {
 		befehlTree = befehlBaum;
+		
+		//Init für RA/B-IO-Arrays - WO
+		for (int b = 0; b < RAio.length; b++) {
+			RAio[b]=1;
+		}
+		for (int b = 0; b < RBio.length; b++) {
+			RBio[b]=1;
+		}
+		
+		//Starte eigentliches Programm
 		for (i = 0; i < befehlTree.size(); i++) {
 			
 			while(getPause()==true){
@@ -65,6 +78,8 @@ public class InstructionManager {
 			
 			befehlTree.get(i);
 			findeBefehl(befehlTree.get(i).getCode());
+			
+			System.out.println(mem.readFileValue(5));
 //			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
 //			System.out.println("******zeile:" + i +"  F Register: "+mem.readFileValue(0x0f));
 		}
@@ -109,8 +124,7 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 0)==0){
 			ra0=false;
 		}
-		
-		if (mem.readBitValue(0x85, 0)==1) {
+		if (RAio[0]==1) {
 			return false;	
 		} else {
 			return ra0;
@@ -124,7 +138,7 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 1)==0){
 			ra1=false;
 		}
-		if (mem.readBitValue(0x85, 1)==1) {
+		if (RAio[1]==1) {
 			return false;	
 		} else {
 			return ra1;
@@ -138,7 +152,7 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 2)==0){
 			ra2=false;
 		}
-		if (mem.readBitValue(0x85, 2)==1) {
+		if (RAio[2]==1) {
 			return false;	
 		} else {
 			return ra2;
@@ -151,7 +165,7 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 3)==0){
 			ra3=false;
 		}
-		if (mem.readBitValue(0x85, 3)==1) {
+		if (RAio[3]==1) {
 			return false;	
 		} else {
 			return ra3;
@@ -164,7 +178,7 @@ public class InstructionManager {
 		if(mem.readBitValue(5, 4)==0){
 			ra4=false;
 		}
-		if (mem.readBitValue(0x85, 4)==1) {
+		if (RAio[4]==1) {
 			return false;	
 		} else {
 			return ra4;
@@ -177,7 +191,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 0)==0){
 			rb0=false;
 		}
-		if (mem.readBitValue(0x86, 0)==1) {
+		if (RBio[0]==1) {
 			return false;	
 		} else {
 			return rb0;
@@ -190,7 +204,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 1)==0){
 			rb1=false;
 		}
-		if (mem.readBitValue(0x86, 1)==1) {
+		if (RBio[1]==1) {
 			return false;	
 		} else {
 			return rb1;
@@ -203,7 +217,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 2)==0){
 			rb2=false;
 		}
-		if (mem.readBitValue(0x86, 2)==1) {
+		if (RBio[2]==1) {
 			return false;	
 		} else {
 			return rb2;
@@ -216,7 +230,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 3)==0){
 			rb3=false;
 		}
-		if (mem.readBitValue(0x86, 3)==1) {
+		if (RBio[3]==1) {
 			return false;	
 		} else {
 			return rb3;
@@ -229,7 +243,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 4)==4){
 			rb4=false;
 		}
-		if (mem.readBitValue(0x86, 4)==1) {
+		if (RBio[4]==1) {
 			return false;	
 		} else {
 			return rb4;
@@ -242,7 +256,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 5)==0){
 			rb5=false;
 		}
-		if (mem.readBitValue(0x86, 5)==1) {
+		if (RBio[5]==1) {
 			return false;	
 		} else {
 			return rb5;
@@ -255,7 +269,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 6)==0){
 			rb6=false;
 		}
-		if (mem.readBitValue(0x86, 6)==1) {
+		if (RBio[6]==1) {
 			return false;	
 		} else {
 			return rb6;
@@ -268,7 +282,7 @@ public class InstructionManager {
 		if(mem.readBitValue(6, 7)==0){
 			rb7=false;
 		}
-		if (mem.readBitValue(0x86, 7)==1) {
+		if (RBio[7]==1) {
 			return false;	
 		} else {
 			return rb7;
@@ -496,6 +510,44 @@ public class InstructionManager {
 	private void movwf() {
 		int stelle= opCode&127;
 		
+		//alternative zur bugbehebung beim auslesen von 0x85 -> wird aber nicht benutzt
+		if((opCode&0xFF) == 0x85){
+			String zahl = Integer.toBinaryString(akku.getAkku());
+			int zahlZ= Integer.parseInt(zahl);
+			RAio[0]=zahlZ%10;
+			zahlZ /= 10;
+			RAio[1]=zahlZ%10;
+			zahlZ /= 10;
+			RAio[2]=zahlZ%10;
+			zahlZ /= 10;
+			RAio[3]=zahlZ%10;
+			zahlZ /= 10;
+			RAio[4]= zahlZ%10;
+			
+		}
+		if((opCode&0xFF) == 0x86){
+			String zahl = Integer.toBinaryString(akku.getAkku());
+			int zahlZ= Integer.parseInt(zahl);
+			RBio[0]=zahlZ%10;
+			zahlZ /= 10;
+			RBio[1]=zahlZ%10;
+			zahlZ /= 10;
+			RBio[2]=zahlZ%10;
+			zahlZ /= 10;
+			RBio[3]=zahlZ%10;
+			zahlZ /= 10;
+			RBio[4]=zahlZ%10;
+			zahlZ /= 10;
+			RBio[5]=zahlZ%10;
+			zahlZ /= 10;
+			RBio[6]=zahlZ%10;
+			zahlZ /= 10;
+			RBio[7]=zahlZ%10;
+			zahlZ /= 10;
+			
+		}
+		
+		//direkte oder indir. adressierung?
 		if(stelle!=0){
 			akku.writeToMem(stelle);
 //			System.out.println("MOVWF: Stelle: " + (opCode & 127)
@@ -711,10 +763,10 @@ public class InstructionManager {
 //		if (i==40) {
 //			mem.writeBitValue(6, 0, 1);
 //		}
-		if (i==46) {
-			ausgabe();
+//		if (i==46) {
+//			ausgabe();
 //			System.exit(1);
-		}
+//		}
 		// Achtung: es entsteht dauerschleife wenn rb=0 --- muss in GUI gesetzt
 		// werden damits weitergeht
 	}

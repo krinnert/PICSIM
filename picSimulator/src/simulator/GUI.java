@@ -52,7 +52,7 @@ public class GUI extends JFrame implements Runnable {
 	public Thread ledStatus=null;
 	
 	public int on; 
-	private boolean ra0;
+//	private boolean ra0;
 	
 	private JList<String> list;
 	private JTable table;
@@ -859,23 +859,22 @@ public class GUI extends JFrame implements Runnable {
 							while (true) {
 								
 								try {
-									Thread.sleep(300);
+									Thread.sleep(1);
 //									// Example for LEDs in state ON
-//									ledRA1.turnState(commands.getRA0());
-//									ledRA2.turnState(commands.getRA1());
-//									ledRA3.turnState(commands.getRA2());
-//									ledRA4.turnState(commands.getRA3());
-//									ledRA5.turnState(commands.getRA4());
-//									ledRB1.turnState(commands.getRB0());
-//									ledRB2.turnState(commands.getRB1());
-//									ledRB3.turnState(commands.getRB2());
-//									ledRB4.turnState(commands.getRB3());
-//									ledRB5.turnState(commands.getRB4());
-//									ledRB6.turnState(commands.getRB5());
-//									ledRB7.turnState(commands.getRB6());
-//									ledRB8.turnState(commands.getRB7());
+									ledRA1.turnState(commands.getRA0());
+									ledRA2.turnState(commands.getRA1());
+									ledRA3.turnState(commands.getRA2());
+									ledRA4.turnState(commands.getRA3());
+									ledRA5.turnState(commands.getRA4());
+									ledRB1.turnState(commands.getRB0());
+									ledRB2.turnState(commands.getRB1());
+									ledRB3.turnState(commands.getRB2());
+									ledRB4.turnState(commands.getRB3());
+									ledRB5.turnState(commands.getRB4());
+									ledRB6.turnState(commands.getRB5());
+									ledRB7.turnState(commands.getRB6());
+									ledRB8.turnState(commands.getRB7());
 									
-//									System.out.print(mem.readFileValue(0x85));
 								} catch (InterruptedException e) {
 								}
 								
