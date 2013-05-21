@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class DataMemory {
 
-	int[] memory;
+	public int[] memory;
 	boolean bank0;
 	int addressOffset = 0x80;
 	Stack<Integer> stack = new Stack<Integer>();

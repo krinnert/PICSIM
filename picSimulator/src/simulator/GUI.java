@@ -29,6 +29,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.Befehl;
@@ -56,6 +57,8 @@ public class GUI extends JFrame implements Runnable {
 	
 	private JList<String> list;
 	private JTable table;
+	private DefaultTableModel tableModel;
+	private Object[][] intTable;
 	private DataMemory mem;
 	private DefaultListModel<String> listModel;
 	private ImageButton play = null;
@@ -692,10 +695,28 @@ public class GUI extends JFrame implements Runnable {
 		table.getTableHeader().setReorderingAllowed(false);
 		
 		
-		Object[][] intTable = fillTable();
+		intTable = fillTable();
 		
+		tableModel = new DefaultTableModel(
+				intTable,
+				new String[] {
+					"", "00", "01", "02", "03", "04", "05", "06", "07"
+				}
+			) {
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+				boolean[] columnEditables = new boolean[] {
+					false, true, true, true, true, true, true, true, true
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+			};
 		
-		table.setModel(new DefaultTableModel(
+		table.setModel(tableModel);
+				/*new DefaultTableModel(
 			intTable,
 			new String[] {
 				"", "00", "01", "02", "03", "04", "05", "06", "07"
@@ -703,7 +724,7 @@ public class GUI extends JFrame implements Runnable {
 		) {
 			/**
 			 * 
-			 */
+			
 			private static final long serialVersionUID = 1L;
 			boolean[] columnEditables = new boolean[] {
 				false, true, true, true, true, true, true, true, true
@@ -712,7 +733,7 @@ public class GUI extends JFrame implements Runnable {
 				return columnEditables[column];
 			}
 		});
-		
+		 */
 		
 		tableScroller.setViewportView(table);
 		
@@ -842,6 +863,9 @@ public class GUI extends JFrame implements Runnable {
 //						System.out.println("Thread für abarbeitung");
 						commands.setPause(false);
 						commands.starteAbarbeitung(befehlTree);
+						mem = commands.getMemory();
+						intTable = fillTable();
+						tableModel.fireTableDataChanged();
 						
 					}
 					
@@ -893,7 +917,8 @@ public class GUI extends JFrame implements Runnable {
 						@Override
 						public void run() {
 							while(true){
-						list.setSelectedIndex(commands.getAktuelleZeile()-1);
+								
+								list.setSelectedIndex(commands.getAktuelleZeile()-1);
 							}
 						}
 					});
