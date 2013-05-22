@@ -244,6 +244,10 @@ public class DataMemory {
 		this.writeBitValue(0x83, 0, 0);
 
 	}
+	
+	public int getCarryFlag(){
+		return readBitValue(0x83, 0);
+	}
 
 	public void setZeroFlag() {
 		// In beiden Statusregistern das flag setzen

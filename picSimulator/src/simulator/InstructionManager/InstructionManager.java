@@ -477,7 +477,7 @@ public class InstructionManager {
 					// rrf();
 					return;
 				case 13:
-					// rlf();
+					 rlf();
 					return;
 				case 14:
 					// swapf();
@@ -865,6 +865,29 @@ public class InstructionManager {
 
 	private void reTurn() {
 		i = mem.leseStack();
+	}
+	private void rlf(){
+		int inhalt = mem.readFileValue(opCode&127);
+		
+		inhalt = (inhalt << 1);
+		
+		if (inhalt > 0xFF) {
+			inhalt = inhalt + mem.getCarryFlag();
+			inhalt &= 255;
+			mem.setCarryFlag();
+		} else {
+			inhalt = inhalt + mem.getCarryFlag();
+			inhalt &= 255;
+			mem.deleteCarryFlag();
+		}
+		
+		int speicherort = opCode >> 7;
+		speicherort &= 0b1;
+		if (speicherort == 0) {
+			akku.setAkku(inhalt);
+		} else {
+			mem.writeFileValue(opCode & 127, inhalt);
+		}
 	}
 	public void ausgabe(){
 		//nur zu testzwecken
