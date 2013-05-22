@@ -11,6 +11,9 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.sql.Time;
+import java.util.Date;
+import java.util.Random;
 import java.util.TreeMap;
 
 import javax.swing.DefaultListModel;
@@ -27,6 +30,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -49,6 +54,7 @@ public class GUI extends JFrame implements Runnable {
 	
 	public Thread t2=null;
 	public Thread t3=null;
+	public Thread t4= null;
 	public Thread updater=null;
 	public Thread ledStatus=null;
 	
@@ -57,8 +63,8 @@ public class GUI extends JFrame implements Runnable {
 	
 	private JList<String> list;
 	private JTable table;
-	private DefaultTableModel tableModel;
-	private Object[][] intTable;
+	public DefaultTableModel tableModel;
+	public Object[][] intTable;
 	private DataMemory mem;
 	private DefaultListModel<String> listModel;
 	private ImageButton play = null;
@@ -85,12 +91,9 @@ public class GUI extends JFrame implements Runnable {
 		this.commands = commandsX;
 		mem = commands.getMemory();
 		Dimension displaySize = getToolkit().getScreenSize();
-		
 		setSize(1200, 800);
 		setLocation(displaySize.width/2 - getWidth()/2, displaySize.height/2 - getHeight()/2);
 		setVisible(true);
-		
-		
 		
 		addComponentListener(new ComponentListener() {
 			@Override
@@ -863,9 +866,6 @@ public class GUI extends JFrame implements Runnable {
 //						System.out.println("Thread für abarbeitung");
 						commands.setPause(false);
 						commands.starteAbarbeitung(befehlTree);
-						mem = commands.getMemory();
-						intTable = fillTable();
-						tableModel.fireTableDataChanged();
 						
 					}
 					
@@ -919,10 +919,34 @@ public class GUI extends JFrame implements Runnable {
 							while(true){
 								
 								list.setSelectedIndex(commands.getAktuelleZeile()-1);
+								
 							}
 						}
 					});
 					t3.start();
+				}
+				if(t4 == null){
+//					System.out.println("Thread für zeilen");
+					t4 = new Thread(new Runnable(){
+						@Override
+						public void run() {
+							while(true){
+								try {
+									Thread.sleep(100);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								mem = commands.getMemory();
+								intTable = updateTable();
+								
+								
+								tableModel.fireTableDataChanged();
+								
+							}
+						}
+					});
+					t4.start();
 				}
 				
 			}
@@ -1000,7 +1024,7 @@ public class GUI extends JFrame implements Runnable {
 	}
 	
 	
-	
+
 	public Object[][] fillTable(){
 		
 		String[] rowNames = {"00","08","10","18","20","28","30","38","40","48","50","58","60","68","70","78","80","88","90","98","A0","A8","B0","B8","C0","C8","D0","D8","E0","E8","F0","F8","FF"};
@@ -1024,6 +1048,29 @@ public class GUI extends JFrame implements Runnable {
 		return intTable;
 	}
 
+
+public Object[][] updateTable(){
+		
+		String[] rowNames = {"00","08","10","18","20","28","30","38","40","48","50","58","60","68","70","78","80","88","90","98","A0","A8","B0","B8","C0","C8","D0","D8","E0","E8","F0","F8","FF"};
+		Object[][] intTable = new Object[32][9];
+		int address = 0;
+		int rowTag = 0x0;
+		for(int row=0;row <=31;row++){
+			
+			for(int column=0;column<=8;column++){
+				if(column==0){
+					intTable[row][column]=rowNames[rowTag];
+					rowTag++;
+				}
+				else{
+					tableModel.setValueAt(mem.readFileValue(address), row, column);
+				address++;
+				}
+			}
+			
+		}
+		return intTable;
+	}
 
 	@Override
 	public void run() {

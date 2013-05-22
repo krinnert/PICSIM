@@ -50,6 +50,7 @@ public class InstructionManager {
 			RBio[b]=1;
 		}
 		
+		
 		//Starte eigentliches Programm
 		for (i = 0; i < befehlTree.size(); i++) {
 			
@@ -79,7 +80,6 @@ public class InstructionManager {
 			befehlTree.get(i);
 			findeBefehl(befehlTree.get(i).getCode());
 			
-			System.out.println(mem.readFileValue(5));
 //			System.out.println("******Statusregisterwert:  " + mem.readFileValue(3));
 //			System.out.println("******zeile:" + i +"  F Register: "+mem.readFileValue(0x0f));
 		}
@@ -474,7 +474,7 @@ public class InstructionManager {
 					decfsz();
 					return;
 				case 12:
-					// rrf();
+					 rrf();
 					return;
 				case 13:
 					 rlf();
@@ -888,6 +888,35 @@ public class InstructionManager {
 		} else {
 			mem.writeFileValue(opCode & 127, inhalt);
 		}
+	}
+	private void rrf(){
+		int inhalt = mem.readFileValue(opCode&127);
+		int helper = inhalt & 1; 
+		
+//		System.out.println("Inhalt: "+ Integer.toBinaryString(inhalt));
+//		System.out.println("Carry: "+mem.getCarryFlag());
+		inhalt = (inhalt >>> 1);
+		
+		if (mem.getCarryFlag()==1) {
+			inhalt += 127;
+		}
+		
+		if (helper == 1) {
+			mem.setCarryFlag();
+		} else {
+			mem.deleteCarryFlag();
+		}
+		
+		int speicherort = opCode >> 7;
+		speicherort &= 0b1;
+		if (speicherort == 0) {
+			akku.setAkku(inhalt);
+		} else {
+			mem.writeFileValue(opCode & 127, inhalt);
+		}
+		
+//		System.out.println("Inhalt after: "+Integer.toBinaryString(inhalt));
+//		System.out.println("Carry after: "+mem.getCarryFlag());
 	}
 	public void ausgabe(){
 		//nur zu testzwecken

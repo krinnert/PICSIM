@@ -32,35 +32,15 @@ public class DataMemory {
 		this.initPCLath();
 	}
 
-	public void initMemory() {
-
-		// Kompletter Speicherbereich mit 0 überschreiben
-		for (int i = 0; i < memory.length; i++) {
-			memory[i] = 0b00000000;
-		}
-
-		// SFR mit vorbelegten Werten füllen, wenn diese nicht 0 oder unbekannt
-		// sind
-		// 03h Status: 0001 1xxx
-		memory[0x03] = 0b00011000;
-		// 81h TMR0:1111 1111
-		memory[0x81] = 0b11111111;
-		// 83h Status 0001 1xxx
-		memory[0x83] = 0b00011000;
-		// 85h TRIS A ---1 1111:
-		memory[0x85] = 0b00011111;
-//		memory[0x85] = 0b00000000;
-		// 86h TRIS B 1111 1111
-		memory[0x86] = 0b11111111;
-	}
+	
 
 	// Kompletten 8 Bit aus Register an Adresse ausgeben
 	public int readFileValue(int address) {
 
 		// Wenn Bank 1 aktiv, dann Offset addieren
-		if (this.checkBank()) {
-			address = address + addressOffset;
-		}
+//		if (this.checkBank()) {
+//			address = address + addressOffset;
+//		}
 		return memory[address];
 	}
 
@@ -305,5 +285,28 @@ public class DataMemory {
 	}
 	public int[] getMemory(){
 		return memory;
+	}
+	public void initMemory() {
+
+		// Kompletter Speicherbereich mit 0 überschreiben
+		for (int i = 0; i < memory.length; i++) {
+			memory[i] = 0b00000000;
+		}
+
+		// SFR mit vorbelegten Werten füllen, wenn diese nicht 0 oder unbekannt
+		// sind
+		// 03h Status: 0001 1xxx
+//		memory[0x03] = 0b00011000; - n used
+		memory[0x03] = 0b00000000;
+		// 81h TMR0:1111 1111
+		memory[0x81] = 0b11111111;
+		// 83h Status 0001 1xxx
+		memory[0x83] = 0b00011000;
+		// 85h TRIS A ---1 1111:
+		memory[0x85] = 0b00011111;
+		// 86h TRIS B 1111 1111
+		memory[0x86] = 0b11111111;
+		
+		
 	}
 }
