@@ -29,7 +29,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.Befehl;
@@ -135,13 +134,13 @@ public class GUI extends JFrame implements Runnable {
 				.addComponent(Menu, GroupLayout.DEFAULT_SIZE, 1182, Short.MAX_VALUE)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(listScroller, GroupLayout.PREFERRED_SIZE, 437, GroupLayout.PREFERRED_SIZE)
+					.addComponent(listScroller, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(tableScroller, GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE))
+							.addComponent(tableScroller, GroupLayout.PREFERRED_SIZE, 582, GroupLayout.PREFERRED_SIZE))
 						.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
 						.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())

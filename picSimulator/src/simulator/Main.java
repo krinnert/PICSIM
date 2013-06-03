@@ -14,7 +14,7 @@ public class Main {
 
 		new GUI(datei, befehl);
 		
-		Thread.sleep(1000);
+		Thread.sleep(1500);
 		start.dispose();
 	}
 

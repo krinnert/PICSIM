@@ -20,7 +20,7 @@ public class ImageButton extends JButton {
 	 * Customized Icon with new functions
 	 */
 	public ImageButton(String imagePath, String imageMouseOverPath, String imagePressedPath, String tooltip) {
-		
+	
 		ImageIcon iconNormal = new ImageIcon(getToolkit().getImage(path + imagePath).getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
 		ImageIcon iconMouseOver = new ImageIcon(getToolkit().getImage(path + imageMouseOverPath).getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
 		ImageIcon iconPressed = new ImageIcon(getToolkit().getImage(path + imagePressedPath).getScaledInstance(dim.width, dim.height, Image.SCALE_SMOOTH));
