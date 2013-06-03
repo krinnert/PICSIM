@@ -46,6 +46,10 @@ public class DataMemory {
 //		}
 		return memory[address];
 	}
+	
+	public void clearStack(){
+		stack.clear();
+	}
 
 	// Komplette 8 Bit in Register an Addresse schreiben
 	public void writeFileValue(int address, int value) {
