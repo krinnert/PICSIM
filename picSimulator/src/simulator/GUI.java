@@ -1,6 +1,7 @@
 package simulator;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -57,6 +58,7 @@ public class GUI extends JFrame implements Runnable {
 //	private boolean ra0;
 	
 	private JList<String> list;
+	//private JList<String> list;
 	private JTable table;
 	public DefaultTableModel tableModel;
 	public Object[][] intTable;
@@ -132,6 +134,18 @@ public class GUI extends JFrame implements Runnable {
 		JPanel stack = new JPanel();
 		stack.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Stack", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
 		
+		JPanel laufzeit = new JPanel();
+		laufzeit.setLayout(null);
+		laufzeit.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Laufzeit", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
+		
+		JLabel nameLauzeit = new JLabel("Laufzeit in ms:");
+		nameLauzeit.setBounds(12, 28, 100, 16);
+		laufzeit.add(nameLauzeit);
+		
+		JLabel valueLaufzeit = new JLabel("0");
+		valueLaufzeit.setBounds(124, 28, 45, 16);
+		laufzeit.add(valueLaufzeit);
+		
 		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -152,7 +166,9 @@ public class GUI extends JFrame implements Runnable {
 								.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
 								.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
 							.addGap(18)
-							.addComponent(stack, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(stack, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(laufzeit, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -169,12 +185,14 @@ public class GUI extends JFrame implements Runnable {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(tableScroller, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE)))
 							.addGap(14)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
-								.addComponent(stack, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+									.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
+									.addComponent(stack, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
+								.addComponent(laufzeit, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap())
 		);
 		stack.setLayout(null);
@@ -196,6 +214,7 @@ public class GUI extends JFrame implements Runnable {
 		stack.add(valueDepth);
 		
 		list = new JList<String>();
+	//	list = new JList<String>();
 		listScroller.setViewportView(list);
 		BoxSchalter.setLayout(null);
 		
@@ -928,6 +947,7 @@ public class GUI extends JFrame implements Runnable {
 									}else{
 										valueStack.setText("0");
 										valueDepth.setText("0");
+										
 									}
 								} catch (InterruptedException e) {
 								}
