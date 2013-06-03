@@ -214,7 +214,6 @@ public class GUI extends JFrame implements Runnable {
 		stack.add(valueDepth);
 		
 		list = new JList<String>();
-	//	list = new JList<String>();
 		listScroller.setViewportView(list);
 		BoxSchalter.setLayout(null);
 		
