@@ -944,6 +944,9 @@ public class GUI extends JFrame implements Runnable {
 									if(mem.returnStackSize() > 0) {
 										valueStack.setText("" + mem.returnStack());
 										valueDepth.setText("" + mem.returnStackSize());
+									}else{
+										valueStack.setText("0");
+										valueDepth.setText("0");
 									}
 								} catch (InterruptedException e) {
 								}

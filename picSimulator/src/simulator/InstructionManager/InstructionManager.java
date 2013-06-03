@@ -876,12 +876,14 @@ public class InstructionManager {
 		akku.setAkku(value);
 		i = mem.leseStack();
 //		System.out.println("gehe zurück zu Adr: " + i);
+		mem.clearStack();
 		laufzeit++;
 		laufzeit++;
 	}
 
 	private void reTurn() {
 		i = mem.leseStack();
+		mem.clearStack();
 		laufzeit++;
 		laufzeit++;
 	}
