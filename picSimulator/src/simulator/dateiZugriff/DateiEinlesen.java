@@ -6,7 +6,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 public class DateiEinlesen {
 	
