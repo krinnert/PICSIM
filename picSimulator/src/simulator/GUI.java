@@ -11,9 +11,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.sql.Time;
-import java.util.Date;
-import java.util.Random;
 import java.util.TreeMap;
 
 import javax.swing.DefaultListModel;
@@ -30,8 +27,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -39,6 +34,7 @@ import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.Befehl;
 import simulator.dateiZugriff.DateiEinlesen;
 import simulator.memory.DataMemory;
+import javax.swing.JLabel;
 
 public class GUI extends JFrame implements Runnable {
 	/**
@@ -82,6 +78,9 @@ public class GUI extends JFrame implements Runnable {
 	private LED ledRB6;
 	private LED ledRB7;
 	private LED ledRB8;
+	
+	private JLabel valueStack;
+	private JLabel valueDepth;
 	
 	
 	public GUI( DateiEinlesen readFileX, InstructionManager commandsX) {
@@ -130,6 +129,10 @@ public class GUI extends JFrame implements Runnable {
 		
 		JScrollPane listScroller = new JScrollPane();
 		
+		JPanel stack = new JPanel();
+		stack.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Stack", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
+		
+		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -139,13 +142,17 @@ public class GUI extends JFrame implements Runnable {
 					.addContainerGap()
 					.addComponent(listScroller, GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(tableScroller, GroupLayout.PREFERRED_SIZE, 582, GroupLayout.PREFERRED_SIZE))
-						.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
-						.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
+								.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addComponent(stack, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -154,27 +161,45 @@ public class GUI extends JFrame implements Runnable {
 					.addComponent(Menu, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(listScroller, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
-							.addContainerGap())
+						.addComponent(listScroller, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(BoxSchalter, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(tableScroller, GroupLayout.PREFERRED_SIZE, 366, GroupLayout.PREFERRED_SIZE)))
-							.addPreferredGap(ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-							.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-							.addGap(13)
-							.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-							.addGap(147))))
+							.addGap(14)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
+								.addComponent(stack, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap())
 		);
+		stack.setLayout(null);
+		
+		JLabel nameStack = new JLabel("Top of Stack: ");
+		nameStack.setBounds(12, 28, 81, 16);
+		stack.add(nameStack);
+		
+		JLabel nameDepth = new JLabel("Depth:");
+		nameDepth.setBounds(12, 69, 81, 16);
+		stack.add(nameDepth);
+		
+		valueStack = new JLabel("0");
+		valueStack.setBounds(124, 28, 45, 16);
+		stack.add(valueStack);
+		
+		valueDepth = new JLabel("0");
+		valueDepth.setBounds(124, 69, 45, 16);
+		stack.add(valueDepth);
 		
 		list = new JList<String>();
 		listScroller.setViewportView(list);
 		BoxSchalter.setLayout(null);
 		
-		list.setEnabled(false);
+		list.setEnabled(true);
 		
 		final JCheckBox S1 = new JCheckBox("RA0");
 		S1.setBorder(null);
@@ -897,7 +922,10 @@ public class GUI extends JFrame implements Runnable {
 									ledRB6.turnState(commands.getRB5());
 									ledRB7.turnState(commands.getRB6());
 									ledRB8.turnState(commands.getRB7());
-									
+									if(mem.returnStackSize() > 0) {
+										valueStack.setText("" + mem.returnStack());
+										valueDepth.setText("" + mem.returnStackSize());
+									}
 								} catch (InterruptedException e) {
 								}
 								
