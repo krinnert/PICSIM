@@ -226,12 +226,6 @@ public class GUI extends JFrame implements Runnable {
 		S1.setBorder(null);
 		S1.setBounds(12, 20, 95, 25);
 		BoxSchalter.add(S1);
-//		if(S1.isSelected() == true){
-//			 on = 1;
-//		} else {
-//			on = 0;
-//		}
-//		commands.setRA0(on);
 		
 		S1.addMouseListener(new MouseListener() {
 			
