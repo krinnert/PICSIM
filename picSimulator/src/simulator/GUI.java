@@ -60,6 +60,7 @@ public class GUI extends JFrame implements Runnable {
 	private JList<String> list;
 	//private JList<String> list;
 	private JTable table;
+	
 	public DefaultTableModel tableModel;
 	public Object[][] intTable;
 	private DataMemory mem;
@@ -83,6 +84,7 @@ public class GUI extends JFrame implements Runnable {
 	
 	private JLabel valueStack;
 	private JLabel valueDepth;
+	private JLabel valueLaufzeit;
 	
 	
 	public GUI( DateiEinlesen readFileX, InstructionManager commandsX) {
@@ -142,7 +144,7 @@ public class GUI extends JFrame implements Runnable {
 		nameLauzeit.setBounds(12, 28, 100, 16);
 		laufzeit.add(nameLauzeit);
 		
-		JLabel valueLaufzeit = new JLabel("0");
+		valueLaufzeit = new JLabel("0");
 		valueLaufzeit.setBounds(124, 28, 45, 16);
 		laufzeit.add(valueLaufzeit);
 		
@@ -941,6 +943,7 @@ public class GUI extends JFrame implements Runnable {
 									ledRB6.turnState(commands.getRB5());
 									ledRB7.turnState(commands.getRB6());
 									ledRB8.turnState(commands.getRB7());
+									valueLaufzeit.setText("" + commands.getLaufzeit());
 									if(mem.returnStackSize() > 0) {
 										valueStack.setText("" + mem.returnStack());
 										valueDepth.setText("" + mem.returnStackSize());
