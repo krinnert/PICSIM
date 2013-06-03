@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import simulator.dateiZugriff.Befehl;
 import simulator.memory.Akku;
 import simulator.memory.DataMemory;
-
+//break, stack laufzeit
 public class InstructionManager {
 	static TreeMap<Integer, Befehl> befehlTree = new TreeMap<Integer, Befehl>();
 	private DataMemory mem = new DataMemory();
@@ -19,6 +19,7 @@ public class InstructionManager {
 	public int i = 0;
 	private boolean pause=true;
 	private boolean next=false;
+	private int laufzeit=0;
 	
 	private int[] RAio = new int[5];
 	private int[] RBio = new int[8];
@@ -772,7 +773,7 @@ public class InstructionManager {
 	}
 
 	private void comf() {
-		// inhalt komplämentieren
+		// inhalt komplimentieren
 //		System.out.println("Mem vor com: "+ (mem.readFileValue(opCode&127)));
 		int inhalt = mem.readFileValue((opCode & 127));
 		inhalt = ~inhalt;
@@ -936,6 +937,9 @@ public class InstructionManager {
 		System.out.println(mem.readFileValue(0x11));
 		System.out.println(mem.readFileValue(0x12));
 		System.out.println(mem.readFileValue(0x1f));
+		
+	}
+	public int returnStack{
 		
 	}
 
