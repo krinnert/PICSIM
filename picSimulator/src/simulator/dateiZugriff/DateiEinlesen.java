@@ -40,7 +40,7 @@ public class DateiEinlesen {
 			
 				//würde nur text ohne befehle speichern
 				
-				textTree.put(zeilenNummer, dateiTextZeile.substring(27));
+				textTree.put(zeilenNummer, dateiTextZeile.substring(2, 4)+"       "+dateiTextZeile.substring(27));
 				
 				
 				//speichert: Identifier: speicherst. und in Befehlsklasse: befehl und Zeilennr
