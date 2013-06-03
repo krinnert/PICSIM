@@ -939,9 +939,6 @@ public class InstructionManager {
 		System.out.println(mem.readFileValue(0x1f));
 		
 	}
-	public int returnStack{
-		
-	}
-
+	
 
 }
