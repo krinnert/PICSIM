@@ -1,7 +1,6 @@
 package simulator;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -20,11 +19,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -35,7 +38,6 @@ import simulator.InstructionManager.InstructionManager;
 import simulator.dateiZugriff.Befehl;
 import simulator.dateiZugriff.DateiEinlesen;
 import simulator.memory.DataMemory;
-import javax.swing.JLabel;
 
 public class GUI extends JFrame implements Runnable {
 	/**
@@ -55,10 +57,8 @@ public class GUI extends JFrame implements Runnable {
 	public Thread ledStatus=null;
 	
 	public int on; 
-//	private boolean ra0;
 	
 	private JList<String> list;
-	//private JList<String> list;
 	private JTable table;
 	
 	public DefaultTableModel tableModel;
@@ -85,6 +85,8 @@ public class GUI extends JFrame implements Runnable {
 	private JLabel valueStack;
 	private JLabel valueDepth;
 	private JLabel valueLaufzeit;
+	private SpinnerModel sm;
+	private JSpinner spinner;
 	
 	
 	public GUI( DateiEinlesen readFileX, InstructionManager commandsX) {
@@ -148,6 +150,14 @@ public class GUI extends JFrame implements Runnable {
 		valueLaufzeit.setBounds(124, 28, 45, 16);
 		laufzeit.add(valueLaufzeit);
 		
+		JPanel debugging = new JPanel();
+		debugging.setLayout(null);
+		debugging.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Laufzeit", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 153, 255)));
+		
+		JLabel lblDebuggingInZeile = new JLabel("Debugging in Zeile:");
+		lblDebuggingInZeile.setBounds(12, 28, 120, 16);
+		debugging.add(lblDebuggingInZeile);
+		
 		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -164,9 +174,10 @@ public class GUI extends JFrame implements Runnable {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(tableScroller, GroupLayout.PREFERRED_SIZE, 582, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(BoxLEDra, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
-								.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(debugging, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(BoxLEDra, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+								.addComponent(BoxLEDrb, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE))
 							.addGap(18)
 							.addComponent(stack, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
@@ -194,9 +205,16 @@ public class GUI extends JFrame implements Runnable {
 										.addPreferredGap(ComponentPlacement.RELATED)
 										.addComponent(BoxLEDrb, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
 									.addComponent(stack, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
-								.addComponent(laufzeit, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(laufzeit, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
+							.addGap(12)
+							.addComponent(debugging, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
+		
+		sm = new SpinnerNumberModel(0, 0, 100, 1);
+		spinner = new JSpinner(sm);
+		spinner.setBounds(144, 25, 61, 22);
+		debugging.add(spinner);
 		stack.setLayout(null);
 		
 		JLabel nameStack = new JLabel("Top of Stack: ");
@@ -855,6 +873,7 @@ public class GUI extends JFrame implements Runnable {
 			    	readFile.berechneDatei(filePath);
 			    	list.setModel(listModel);
 			    	readFile.insert(listModel);
+			    	//sm = new SpinnerNumberModel(0, 0, 100, 2);
 			    	befehlTree= readFile.getBefehlTree();
 					textTree= readFile.getTextTree();
 			    } else {	
@@ -902,10 +921,8 @@ public class GUI extends JFrame implements Runnable {
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
-//						System.out.println("Thread für abarbeitung");
 						commands.setPause(false);
 						commands.starteAbarbeitung(befehlTree);
-						
 					}
 					
 				});
@@ -918,7 +935,6 @@ public class GUI extends JFrame implements Runnable {
 						
 						@Override
 						public void run() {
-							
 							while (true) {
 								
 								try {
@@ -944,7 +960,6 @@ public class GUI extends JFrame implements Runnable {
 									}else{
 										valueStack.setText("0");
 										valueDepth.setText("0");
-										
 									}
 								} catch (InterruptedException e) {
 								}
@@ -957,14 +972,19 @@ public class GUI extends JFrame implements Runnable {
 					});
 				ledStatus.start();
 				}
-				
+				int value = ((Number)spinner.getValue()).intValue();
 				if(t3 == null){
 //					System.out.println("Thread für zeilen");
 					t3 = new Thread(new Runnable(){
 						@Override
 						public void run() {
+							int value = ((Number)spinner.getValue()).intValue();
 							while(true){
-								
+
+								if(value == (commands.getAktuelleZeile()-1)) {
+									pause.setSelected(true);
+									commands.setPause(true);
+								}
 								list.setSelectedIndex(commands.getAktuelleZeile()-1);
 								
 							}
