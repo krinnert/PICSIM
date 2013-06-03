@@ -31,6 +31,9 @@ public class DataMemory {
 		
 		this.initPCLath();
 	}
+	
+	
+
 
 	
 
@@ -277,6 +280,14 @@ public class DataMemory {
 	}
 	public int leseStack(){
 		return stack.pop();
+	}
+	public int returnStack(){
+		int help= stack.pop();
+		stack.push(help);
+		return help;
+	}
+	public int returnStackSize(){
+		return stack.size();
 	}
 	public int getLath(int bitLow, int bitHigh){
 		int ret= Integer.valueOf(pclathBitSet.get(bitLow, bitHigh).toString());
