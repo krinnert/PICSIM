@@ -18,7 +18,7 @@ public class DateiEinlesen {
 	String dateiName; //der name der datei
 	TreeMap<Integer, Befehl> befehlTree = new TreeMap<Integer, Befehl>();
 	TreeMap<Integer, String> textTree = new TreeMap<Integer, String>();
-	
+	int help = 0;
 
 	public void berechneDatei(String path){
 		dateiName = path;
@@ -39,8 +39,13 @@ public class DateiEinlesen {
 //				System.out.println(meineTextZeile);// gibt die eig textzeile aus mit alles was man haben will
 			
 				//würde nur text ohne befehle speichern
-				
-				textTree.put(zeilenNummer, dateiTextZeile.substring(2, 4)+"       "+dateiTextZeile.substring(27));
+				try{
+				help= Integer.parseInt(dateiTextZeile.substring(2, 4), 16);
+				textTree.put(zeilenNummer, (""+help+"       "+dateiTextZeile.substring(27)));
+				}catch (Exception e) {
+					// TODO: handle exception
+					textTree.put(zeilenNummer, ("       "+dateiTextZeile.substring(27)));
+				}
 				
 				
 				//speichert: Identifier: speicherst. und in Befehlsklasse: befehl und Zeilennr
