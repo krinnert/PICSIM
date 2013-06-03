@@ -506,11 +506,12 @@ public class InstructionManager {
 	public void movlw() {
 		akku.setAkku((opCode & 255));
 //		System.out.println("MOVLW: Akkuwert danach: " + akku.getAkku());
+		laufzeit++;
 	}
 
 	private void movwf() {
 		int stelle= opCode&127;
-		
+		laufzeit++;
 		//alternative zur bugbehebung beim auslesen von 0x85 -> wird aber nicht benutzt
 		if((opCode&0xFF) == 0x85){
 			String zahl = Integer.toBinaryString(akku.getAkku());
@@ -565,11 +566,12 @@ public class InstructionManager {
 
 	private void clrw() {
 		akku.deleteAkku();
+		laufzeit++;
 //		System.out.println("CLRW: Akku danach: " + akku.getAkku());
 	}
 
 	private void incf() {
-
+		laufzeit++;
 		int tmp = opCode;
 		int inhalt = mem.readFileValue((opCode & 127)) + 1;
 
@@ -591,6 +593,7 @@ public class InstructionManager {
 
 	private void bcf() {
 //		 System.out.println("bcf davor: "+mem.readFileValue(opCode&127));
+		laufzeit++;
 		int bit = opCode >> 7;
 		bit &= 0b111;
 		mem.writeBitValue((opCode & 127), bit, 0);
@@ -601,6 +604,7 @@ public class InstructionManager {
 //		System.out.println("BSF davor: " + mem.readFileValue(opCode & 127));
 		int bit = opCode >> 7;
 		bit &= 0b111;
+		laufzeit++;
 		mem.writeBitValue((opCode & 127), bit, 1);
 //		System.out.println("Bit set file: " + mem.readFileValue(opCode & 127));
 	}
@@ -608,7 +612,7 @@ public class InstructionManager {
 	private void addlw() {
 		// System.out.println(akku.getAkku());
 		int result = akku.getAkku() + (opCode & 255);
-
+		laufzeit++;
 		int maske = 0b1111;
 		int tmp = opCode & maske;
 		int akkuWertMaskiert = akku.getAkku() & 15;
@@ -636,7 +640,7 @@ public class InstructionManager {
 	private void addwf(){
 		int adr = opCode & 127;
 		int inhalt;
-		
+		laufzeit++;
 		if (adr != 0) {	
 		inhalt = mem.readFileValue(adr) + akku.getAkku();
 		}else{
@@ -689,7 +693,7 @@ public class InstructionManager {
 		int adr = opCode & 127;
 		int inhalt = mem.readFileValue(adr) - akku.getAkku();
 		int speicherort = opCode >> 7;
-		
+		laufzeit++;
 //		System.out.println(inhalt);
 //		inhalt &= 0xFF;
 
@@ -731,27 +735,30 @@ public class InstructionManager {
 
 	private void nop() {
 		// System.out.println("nop");
+		laufzeit++;
 	}
 
 	private void btfss() {
 		int bit = opCode >> 7;
 		bit &= 0b111;
-
+		laufzeit++;
 		if ((mem.readBitValue((opCode & 127), bit)) == 0) {
 			// System.out.println("dont skip");
 		} else {
 			// System.out.println("skip");
 			i++;
+			laufzeit++;
 		}
 	}
 
 	private void btfsc() {
 		int bit = opCode >> 7;
 		bit &= 0b111;
-
+		laufzeit++;
 		if ((mem.readBitValue((opCode & 127), bit)) == 0) {
 			// System.out.println("skip");
 			i++;
+			laufzeit++;
 		} else {
 			// System.out.println("dont skip");
 		}
@@ -770,6 +777,8 @@ public class InstructionManager {
 //		}
 		// Achtung: es entsteht dauerschleife wenn rb=0 --- muss in GUI gesetzt
 		// werden damits weitergeht
+		laufzeit++;
+		laufzeit++;
 	}
 
 	private void comf() {
@@ -778,7 +787,7 @@ public class InstructionManager {
 		int inhalt = mem.readFileValue((opCode & 127));
 		inhalt = ~inhalt;
 		inhalt &= 255;
-
+		laufzeit++;
 		// inhalt = 0 ?
 		if (inhalt == 0) {
 			// System.out.println("set zero");
@@ -799,9 +808,12 @@ public class InstructionManager {
 //			System.out.println("Register nach com: "+mem.readFileValue(opCode&127));
 		}
 	}
+	public int getLaufzeit(){
+		return laufzeit;
+	}
 
 	private void decfsz() {
-		
+		laufzeit++;
 //		System.out.println("DEC nach durchlauf: " +a + "  "+ (mem.readFileValue(12)-1));
 //		System.out.println();
 //		if (a==17) {
@@ -830,6 +842,7 @@ public class InstructionManager {
 
 	private void incfsz() {
 		int inhalt = mem.readFileValue((opCode & 127)) + 1;
+		laufzeit++;
 		if (inhalt != 0) {
 
 			int speicherort = opCode >> 7;
@@ -850,7 +863,8 @@ public class InstructionManager {
 	private void call() {
 		int adr = (opCode & 2047) - 1;
 		mem.schreibeAufStack(i );
-
+		laufzeit++;
+		laufzeit++;
 		i = adr;
 //		System.out.println("gehe zu adr: " + i);
 		// i= mem.getLath(3, 4) + adr;
@@ -862,14 +876,18 @@ public class InstructionManager {
 		akku.setAkku(value);
 		i = mem.leseStack();
 //		System.out.println("gehe zurück zu Adr: " + i);
+		laufzeit++;
+		laufzeit++;
 	}
 
 	private void reTurn() {
 		i = mem.leseStack();
+		laufzeit++;
+		laufzeit++;
 	}
 	private void rlf(){
 		int inhalt = mem.readFileValue(opCode&127);
-		
+		laufzeit++;
 		inhalt = (inhalt << 1);
 		
 		if (inhalt > 0xFF) {
@@ -893,7 +911,7 @@ public class InstructionManager {
 	private void rrf(){
 		int inhalt = mem.readFileValue(opCode&127);
 		int helper = inhalt & 1; 
-		
+		laufzeit++;
 //		System.out.println("Inhalt: "+ Integer.toBinaryString(inhalt));
 //		System.out.println("Carry: "+mem.getCarryFlag());
 		inhalt = (inhalt >>> 1);
